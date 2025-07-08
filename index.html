@@ -21,9 +21,10 @@
             scroll-behavior: smooth;
         }
 
-        /* Paleta de Cores Principais */
+        /* Paleta de Cores com Fundo Degradê */
         :root {
-            --color-bg: #543925;
+            --color-bg-start: #543925;
+            --color-bg-end: #3e2a1c;
             --color-text-light: #dcc5a1;
             --color-text-dark: #543925;
             --color-card-bg: rgba(255, 255, 255, 0.05);
@@ -31,7 +32,12 @@
             --color-mockup-frame: #3e2a1c;
         }
 
-        .bg-main { background-color: var(--color-bg); }
+        body {
+            background-color: var(--color-bg-end);
+            background-image: linear-gradient(to bottom, var(--color-bg-start) 50%, var(--color-bg-end) 100%);
+            min-height: 100vh;
+        }
+
         .text-light { color: var(--color-text-light); }
         .bg-accent { background-color: var(--color-text-light); }
         .text-accent-content { color: var(--color-text-dark); }
@@ -40,8 +46,41 @@
         .text-accent-icons { color: var(--color-text-light); }
         .bg-card { background-color: var(--color-card-bg); }
         .border-card { border-color: var(--color-card-border); }
-        .mockup-frame { background-color: var(--color-mockup-frame); border-color: var(--color-mockup-frame); }
-
+        
+        /* Estilo do Mockup de iPhone Moderno */
+        .mockup-frame {
+            background-color: var(--color-mockup-frame);
+            border: 10px solid var(--color-mockup-frame);
+            border-radius: 40px;
+            position: relative;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
+        }
+        .mockup-screen {
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+            background-color: #000;
+        }
+        .mockup-notch {
+            width: 120px;
+            height: 18px;
+            background-color: var(--color-mockup-frame);
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-bottom-left-radius: 1rem;
+            border-bottom-right-radius: 1rem;
+            z-index: 2;
+        }
+        .mockup-side-button {
+            position: absolute;
+            background-color: var(--color-mockup-frame);
+        }
+        .left-button-1 { top: 104px; left: -12px; height: 36px; width: 4px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; }
+        .left-button-2 { top: 158px; left: -12px; height: 36px; width: 4px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; }
+        .right-button { top: 122px; right: -12px; height: 54px; width: 4px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; }
+        
         /* Estilos da Galeria com Animação de Arrastar */
         .tab-button.active {
             background-color: var(--color-text-light);
@@ -51,21 +90,115 @@
             animation: slideInAnimation 0.5s ease-out forwards;
         }
         @keyframes slideInAnimation {
-            from {
-                opacity: 0;
-                transform: translateX(40px); /* Começa um pouco à direita */
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        /* Efeitos da Imagem de Perfil */
+        .profile-image-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .profile-image-container {
+            position: relative;
+        }
+        .profile-image-container::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -2px;
+            height: 50%;
+            background-image: linear-gradient(to top, var(--color-bg-start), transparent);
+            pointer-events: none;
+            z-index: 3;
+        }
+        .profile-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            height: 80%;
+            background-color: var(--color-text-light);
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            animation: pulseGlow 4s infinite ease-in-out;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.05); }
+        }
+
+        /* Animações de Scroll */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Efeitos de Hover Interativos */
+        .interactive-mockup:hover {
+            transform: scale(1.05);
+        }
+        .fade-out-bottom {
+            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        }
+        .portfolio-card {
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-card-border);
+            border-radius: 1.5rem;
+            box-shadow: 0 6px 24px -6px rgba(0,0,0,0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .portfolio-card video,
+        .portfolio-card img {
+            width: 100%;
+            aspect-ratio: 9/16;
+            object-fit: contain;
+            border-radius: 1.5rem 1.5rem 0 0;
+            background: #000;
+        }
+        .portfolio-card .badge-destaque {
+            display: inline-block;
+            background: var(--color-text-light);
+            color: var(--color-text-dark);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .card-saude video {
+            max-height: 600px;
+            object-fit: contain;
+        }
+        .card-saude {
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
         }
     </style>
 </head>
-<body class="bg-main text-light">
+<body class="text-light">
 
     <!-- Cabeçalho e Navegação -->
-    <header class="bg-main/80 backdrop-blur-sm sticky top-0 z-50 border-b border-card">
+    <header class="bg-[#543925]/80 backdrop-blur-sm sticky top-0 z-50 border-b border-card">
         <div class="container mx-auto max-w-6xl px-6 py-4 flex justify-between items-center">
             <a href="#" class="text-xl font-bold text-white">Suhlamita Santos</a>
             <nav class="hidden md:flex space-x-8">
@@ -89,14 +222,19 @@
                 </div>
             </div>
             <div class="md:w-1/2 mt-12 md:mt-0 flex justify-center">
-                <div class="w-72 h-72 md:w-96 md:h-96 rounded-full bg-card overflow-hidden shadow-lg border-4 border-card">
-                    <img src="https://placehold.co/400x400/dcc5a1/543925?text=Suhlamita" alt="Foto de Suhlamita Santos" class="w-full h-full object-cover">
+                <div style="position: relative; display: inline-block;">
+                    <div class="profile-glow"></div>
+                    <img src="capa.png" 
+                         alt="Foto de Suhlamita Santos" 
+                         class="w-auto h-[600px] md:h-[750px] object-contain block fade-out-bottom -mt-24"
+                         style="position: relative; z-index: 2;"
+                         onerror="this.onerror=null;this.src='https://placehold.co/400x500/543925/dcc5a1?text=Imagem+Indisponível';">
                 </div>
             </div>
         </section>
 
         <!-- Seção Sobre Mim -->
-        <section id="sobre" class="py-20 md:py-28 bg-card">
+        <section id="sobre" class="py-20 md:py-28 bg-card fade-in-section">
             <div class="container mx-auto max-w-4xl px-6 text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-white">Olá, sou a Suhlamita Santos</h2>
                 <div class="w-20 h-1 bg-accent-bar mx-auto mt-4 mb-8 rounded"></div>
@@ -105,61 +243,115 @@
             </div>
         </section>
 
-        <!-- Seção Portfólio com Galeria -->
-        <section id="portfolio" class="py-20 md:py-28">
-            <div class="container mx-auto max-w-7xl px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold text-white">Meu Portfólio</h2>
-                    <p class="mt-4 text-light/80">Navegue pelos nichos para ver alguns dos meus projetos.</p>
-                </div>
+        <!-- Abas de navegação dos nichos -->
+        <div id="tabs-container" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+            <button data-niche="beleza" class="tab-button active px-4 py-2 rounded-lg border border-card transition-colors">Beleza</button>
+            <button data-niche="moda" class="tab-button px-4 py-2 rounded-lg border border-card transition-colors">Moda</button>
+            <button data-niche="lifestyle" class="tab-button px-4 py-2 rounded-lg border border-card transition-colors">Lifestyle</button>
+            <button data-niche="gastronomia" class="tab-button px-4 py-2 rounded-lg border border-card transition-colors">Gastronomia</button>
+            <button data-niche="saude" class="tab-button px-4 py-2 rounded-lg border border-card transition-colors">Saúde</button>
+        </div>
 
-                <!-- Abas dos Nichos -->
-                <div id="tabs-container" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-12">
-                    <button data-niche="beleza" class="tab-button active px-4 py-2 rounded-lg border border-card transition-colors">Beleza</button>
-                    <button data-niche="moda" class="tab-button px-4 py-2 rounded-lg border border-card transition-colors">Moda</button>
-                    <button data-niche="lifestyle" class="tab-button px-4 py-2 rounded-lg border border-card transition-colors">Lifestyle</button>
-                    <button data-niche="gastronomia" class="tab-button px-4 py-2 rounded-lg border border-card transition-colors">Gastronomia</button>
-                    <button data-niche="saude" class="tab-button px-4 py-2 rounded-lg border border-card transition-colors">Saúde</button>
-                </div>
-
-                <!-- Conteúdo da Galeria -->
-                <div id="gallery-wrapper" class="relative">
-                    <!-- Conteúdo Beleza -->
-                    <div id="gallery-beleza" class="gallery-content grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/dcc5a1/543925?text=Beleza+1" class="w-full h-full object-cover"></div></div></a>
-                        <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/c9b592/543925?text=Beleza+2" class="w-full h-full object-cover"></div></div></a>
-                        <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/bda886/543925?text=Beleza+3" class="w-full h-full object-cover"></div></div></a>
+        <!-- Conteúdo dos nichos -->
+        <div id="gallery-wrapper">
+            <!-- Beleza -->
+            <div id="gallery-beleza" class="gallery-content">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="portfolio-card">
+                        <img src="beleza01.jpg" alt="Beleza 01" class="w-full object-cover rounded-2xl">
+                        <div class="p-4 w-full text-center">
+                            <p class="text-light/90 font-semibold mb-2">Beleza 01</p>
+                        </div>
                     </div>
-                    <!-- Conteúdo Moda -->
-                    <div id="gallery-moda" class="gallery-content hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/dcc5a1/543925?text=Moda+1" class="w-full h-full object-cover"></div></div></a>
-                        <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/c9b592/543925?text=Moda+2" class="w-full h-full object-cover"></div></div></a>
-                        <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/bda886/543925?text=Moda+3" class="w-full h-full object-cover"></div></div></a>
+                    <div class="portfolio-card">
+                        <img src="beleza02.jpg" alt="Beleza 02" class="w-full object-cover rounded-2xl">
+                        <div class="p-4 w-full text-center">
+                            <p class="text-light/90 font-semibold mb-2">Beleza 02</p>
+                        </div>
                     </div>
-                    <!-- Conteúdo Lifestyle -->
-                    <div id="gallery-lifestyle" class="gallery-content hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/dcc5a1/543925?text=Lifestyle+1" class="w-full h-full object-cover"></div></div></a>
-                        <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/c9b592/543925?text=Lifestyle+2" class="w-full h-full object-cover"></div></div></a>
-                        <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/bda886/543925?text=Lifestyle+3" class="w-full h-full object-cover"></div></div></a>
+                    <!-- Novo vídeo de beleza -->
+                    <div class="portfolio-card card-saude">
+                        <video controls class="w-full rounded-2xl">
+                            <source src="beleza.mp4" type="video/mp4">
+                            Seu navegador não suporta vídeo.
+                        </video>
+                        <div class="p-4 w-full text-center">
+                            <p class="text-light/90 font-semibold mb-2">Vídeo Beleza</p>
+                        </div>
                     </div>
-                    <!-- Conteúdo Gastronomia -->
-                    <div id="gallery-gastronomia" class="gallery-content hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/dcc5a1/543925?text=Gastro+1" class="w-full h-full object-cover"></div></div></a>
-                        <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/c9b592/543925?text=Gastro+2" class="w-full h-full object-cover"></div></div></a>
-                        <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/bda886/543925?text=Gastro+3" class="w-full h-full object-cover"></div></div></a>
-                    </div>
-                    <!-- Conteúdo Saúde -->
-                    <div id="gallery-saude" class="gallery-content hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                         <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/dcc5a1/543925?text=Saúde+1" class="w-full h-full object-cover"></div></div></a>
-                         <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/c9b592/543925?text=Saúde+2" class="w-full h-full object-cover"></div></div></a>
-                         <a href="#" class="group block"><div class="mockup-frame relative mx-auto border-[10px] rounded-[2.5rem] h-[480px] w-[240px] shadow-xl"><div class="rounded-[2rem] overflow-hidden w-full h-full"><img src="https://placehold.co/600x800/bda886/543925?text=Saúde+3" class="w-full h-full object-cover"></div></div></a>
-                    </div>
+                    <!-- Adicione mais cards aqui -->
                 </div>
             </div>
-        </section>
+            <!-- Moda -->
+            <div id="gallery-moda" class="gallery-content hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="portfolio-card">
+                        <img src="moda01.jpg" alt="Moda 01" class="w-full object-cover rounded-2xl">
+                        <div class="p-4 w-full text-center">
+                            <p class="text-light/90 font-semibold mb-2">Moda 01</p>
+                        </div>
+                    </div>
+                    <!-- Adicione seus cards aqui -->
+                </div>
+            </div>
+            <!-- Lifestyle -->
+            <div id="gallery-lifestyle" class="gallery-content hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Adicione seus cards aqui -->
+                </div>
+            </div>
+            <!-- Gastronomia -->
+            <div id="gallery-gastronomia" class="gallery-content hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="portfolio-card">
+                        <img src="Gastronomia01.jpg" alt="Gastronomia 01" class="w-full object-contain rounded-2xl">
+                        <div class="p-4 w-full text-center">
+                            <p class="text-light/90 font-semibold mb-2">Gastronomia 01</p>
+                        </div>
+                    </div>
+                    <!-- Adicione seus cards aqui -->
+                </div>
+            </div>
+            <!-- Saúde -->
+            <div id="gallery-saude" class="gallery-content hidden">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="portfolio-card card-saude">
+                        <video controls class="w-full rounded-2xl">
+                            <source src="Saude.mp4" type="video/mp4">
+                            Seu navegador não suporta vídeo.
+                        </video>
+                        <div class="p-4 w-full text-center">
+                            <p class="text-light/90 font-semibold mb-2">Vídeo Vitaminas Neo Quimica</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-card card-saude">
+                        <video controls class="w-full rounded-2xl">
+                            <source src="saude2.mp4" type="video/mp4">
+                            Seu navegador não suporta vídeo.
+                        </video>
+                        <div class="p-4 w-full text-center">
+                            <p class="text-light/90 font-semibold mb-2">Sabonete Calêndula da Granada</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-card">
+                        <img src="saude01.jpg" alt="Saúde 01" class="w-full object-cover rounded-2xl">
+                        <div class="p-4 w-full text-center">
+                            <p class="text-light/90 font-semibold mb-2">Saúde 01</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-card">
+                        <img src="saude02.jpg" alt="Saúde 02" class="w-full object-cover rounded-2xl">
+                        <div class="p-4 w-full text-center">
+                            <p class="text-light/90 font-semibold mb-2">Saúde 02</p>
+                        </div>
+                    </div>
+                    <!-- Adicione mais cards aqui -->
+                </div>
+            </div>
+        </div>
 
         <!-- Seção de Contato -->
-        <section id="contato" class="py-20 md:py-28">
+        <section id="contato" class="py-20 md:py-28 fade-in-section">
             <div class="container mx-auto max-w-4xl px-6 text-center">
                 <h2 class="text-3xl md:text-4xl font-bold text-white">Vamos criar juntos?</h2>
                 <p class="mt-4 text-lg text-light/80 max-w-2xl mx-auto">Se sua marca valoriza a originalidade e busca uma comunicação humana e impactante, vamos conversar. Estou pronta para criar algo incrível com você.</p>
@@ -169,9 +361,18 @@
                 <div class="mt-12">
                     <p class="text-light/80">Ou me encontre nas redes sociais:</p>
                     <div class="flex justify-center gap-6 mt-4">
-                        <a href="#" class="text-light/70 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg></a>
-                        <a href="#" class="text-light/70 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7"><path d="M21 8.2c-1.5-1.1-3.5-1.8-5.5-1.8V15c0 4.4-3.6 8-8 8s-8-3.6-8-8c0-2.5 1.2-4.8 3-6.2"/><path d="M15.5 2.2V9c0 2.8 2.2 5 5 5"/></svg></a>
-                        <a href="#" class="text-light/70 hover:text-white transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
+                        <a href="https://www.instagram.com/suhlamita.santos?igsh=MWJ4aXQ5NTljM3dtNg==" target="_blank" rel="noopener" aria-label="Instagram">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                        </a>
+                        <a href="https://www.tiktok.com/@suh.santoss3?_t=ZM-8xrSWFQrQV4&_r=1" target="_blank" rel="noopener" aria-label="TikTok">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-music-2"><circle cx="8" cy="18" r="4"/><path d="M12 18V2l7 4"/><circle cx="20" cy="6" r="2"/></svg>
+                        </a>
+                        <a href="mailto:Santossulamyta56@gmail.com" aria-label="E-mail">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
+                        </a>
+                    </div>
+                    <div class="mt-4">
+                        <a href="mailto:Santossulamyta56@gmail.com" class="text-accent-content underline hover:text-accent">Santossulamyta56@gmail.com</a>
                     </div>
                 </div>
             </div>
@@ -181,12 +382,29 @@
     <!-- Rodapé -->
     <footer class="bg-transparent">
         <div class="container mx-auto max-w-6xl px-6 py-6 text-center text-light/70">
-            <p>&copy; 2024 Suhlamita Santos. Todos os direitos reservados.</p>
+            <p>&copy; 2025 Suhlamita Santos. Todos os direitos reservados.</p>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Animação de Scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            const sections = document.querySelectorAll('.fade-in-section');
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Sistema de abas dos nichos
             const tabsContainer = document.getElementById('tabs-container');
             const galleryWrapper = document.getElementById('gallery-wrapper');
             const tabs = tabsContainer.querySelectorAll('.tab-button');
@@ -195,7 +413,7 @@
             // Exibe a primeira galeria por padrão
             const initialGallery = document.getElementById('gallery-beleza');
             if(initialGallery) {
-                initialGallery.classList.add('sliding-in');
+                initialGallery.classList.remove('hidden');
             }
 
             tabs.forEach(tab => {
@@ -207,18 +425,13 @@
                     tab.classList.add('active');
 
                     const niche = tab.dataset.niche;
-                    const targetGallery = document.getElementById(`gallery-${niche}`);
-
                     galleries.forEach(g => {
                         g.classList.add('hidden');
-                        g.classList.remove('sliding-in');
                     });
 
+                    const targetGallery = document.getElementById(`gallery-${niche}`);
                     if (targetGallery) {
                         targetGallery.classList.remove('hidden');
-                        // Força um reflow para garantir que a animação seja reiniciada
-                        void targetGallery.offsetWidth;
-                        targetGallery.classList.add('sliding-in');
                     }
                 });
             });
@@ -227,3 +440,4 @@
 
 </body>
 </html>
+
