@@ -156,22 +156,28 @@
             max-width: 300px;
             margin-left: auto;
             margin-right: auto;
-            background: var(--color-card-bg);
-            border: 1px solid var(--color-card-border);
-            border-radius: 1.5rem;
-            box-shadow: 0 6px 24px -6px rgba(0,0,0,0.15);
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: rgba(40, 30, 20, 0.45);
+            border: 2px solid var(--color-card-border);
+            border-radius: 2rem;
+            box-shadow: 0 8px 32px -4px rgba(60,40,20,0.25), 0 1.5px 8px 0 rgba(220,197,161,0.08);
+            transition: transform 0.25s cubic-bezier(.4,1.4,.6,1), box-shadow 0.25s, border-color 0.25s;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+        .portfolio-card:hover {
+            transform: scale(1.045) translateY(-4px);
+            box-shadow: 0 16px 48px -8px rgba(60,40,20,0.35), 0 2px 16px 0 rgba(220,197,161,0.18);
+            border-color: #e7cfa2;
+            outline: 2px solid #e7cfa2;
+            outline-offset: -4px;
+        }
         .portfolio-card video,
         .portfolio-card img {
             width: 100%;
             aspect-ratio: 9/16;
-            object-fit: contain;
-            border-radius: 1.5rem 1.5rem 0 0;
+            border-radius: 2rem 2rem 0 0;
             background: #000;
         }
         .portfolio-card .badge-destaque {
@@ -192,6 +198,17 @@
             max-width: 300px;
             margin-left: auto;
             margin-right: auto;
+        }
+        /* Cards de imagem com tamanho maior */
+        .portfolio-card img[src*="beleza01.jpg"],
+        .portfolio-card img[src*="beleza02.jpg"],
+        .portfolio-card img[src*="beleza03.jpg"],
+        .portfolio-card img[src*="beleza.jpg"],
+        .portfolio-card img[src*="moda01.jpg"],
+        .portfolio-card img[src*="Gastronomia01.jpg"],
+        .portfolio-card img[src*="saude.jpg"] {
+            max-width: 400px;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -258,25 +275,46 @@
             <div id="gallery-beleza" class="gallery-content">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div class="portfolio-card">
-                        <img src="beleza01.jpg" alt="Beleza 01" class="w-full object-cover rounded-2xl">
+                        <img src="beleza01.jpg" alt="Beleza 01" class="w-full object-contain rounded-2xl">
                         <div class="p-4 w-full text-center">
                             <p class="text-light/90 font-semibold mb-2">Beleza 01</p>
                         </div>
                     </div>
                     <div class="portfolio-card">
-                        <img src="beleza02.jpg" alt="Beleza 02" class="w-full object-cover rounded-2xl">
+                        <img src="beleza02.jpg" alt="Beleza 02" class="w-full object-contain rounded-2xl">
                         <div class="p-4 w-full text-center">
                             <p class="text-light/90 font-semibold mb-2">Beleza 02</p>
                         </div>
                     </div>
-                    <!-- Novo vídeo de beleza -->
-                    <div class="portfolio-card card-saude">
+                    <div class="portfolio-card">
+                        <img src="beleza03.jpg" alt="Beleza 03" class="w-full object-contain rounded-2xl">
+                        <div class="p-4 w-full text-center">
+                            <p class="text-light/90 font-semibold mb-2">Beleza 03</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-card">
+                        <img src="beleza.jpg" alt="Beleza" class="w-full object-contain rounded-2xl">
+                        <div class="p-4 w-full text-center">
+                            <p class="text-light/90 font-semibold mb-2">Beleza</p>
+                        </div>
+                    </div>
+                    <!-- Vídeo de beleza -->
+                    <div class="portfolio-card">
                         <video controls class="w-full rounded-2xl">
                             <source src="beleza.mp4" type="video/mp4">
                             Seu navegador não suporta vídeo.
                         </video>
                         <div class="p-4 w-full text-center">
                             <p class="text-light/90 font-semibold mb-2">Vídeo Beleza</p>
+                        </div>
+                    </div>
+                    <div class="portfolio-card">
+                        <video controls class="w-full rounded-2xl">
+                            <source src="beleza1.mp4" type="video/mp4">
+                            Seu navegador não suporta vídeo.
+                        </video>
+                        <div class="p-4 w-full text-center">
+                            <p class="text-light/90 font-semibold mb-2">Vídeo Beleza 1</p>
                         </div>
                     </div>
                     <!-- Adicione mais cards aqui -->
@@ -315,7 +353,7 @@
             <!-- Saúde -->
             <div id="gallery-saude" class="gallery-content hidden">
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="portfolio-card card-saude">
+                    <div class="portfolio-card">
                         <video controls class="w-full rounded-2xl">
                             <source src="Saude.mp4" type="video/mp4">
                             Seu navegador não suporta vídeo.
@@ -324,25 +362,10 @@
                             <p class="text-light/90 font-semibold mb-2">Vídeo Vitaminas Neo Quimica</p>
                         </div>
                     </div>
-                    <div class="portfolio-card card-saude">
-                        <video controls class="w-full rounded-2xl">
-                            <source src="saude2.mp4" type="video/mp4">
-                            Seu navegador não suporta vídeo.
-                        </video>
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Sabonete Calêndula da Granada</p>
-                        </div>
-                    </div>
                     <div class="portfolio-card">
-                        <img src="saude01.jpg" alt="Saúde 01" class="w-full object-cover rounded-2xl">
+                        <img src="saude.jpg" alt="Saúde" class="w-full object-contain rounded-2xl">
                         <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Saúde 01</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-card">
-                        <img src="saude02.jpg" alt="Saúde 02" class="w-full object-cover rounded-2xl">
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Saúde 02</p>
+                            <p class="text-light/90 font-semibold mb-2">Saúde</p>
                         </div>
                     </div>
                     <!-- Adicione mais cards aqui -->
