@@ -7,410 +7,556 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Nunito+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <style>
         /* Estilos para fontes personalizadas */
         body {
-            font-family: 'Nunito Sans', sans-serif;
+            font-family: 'Inter', sans-serif;
+            background-color: #543925;
+            color: #F5E9DA;
         }
-        h1, h2, h3 {
-            font-family: 'Cormorant Garamond', serif;
+        h1, h2, h3, .font-heading {
+            font-family: 'Playfair Display', serif;
+            color: #FFFFFF;
         }
         /* Efeito de scroll suave */
-        html {
+        html, body {
             scroll-behavior: smooth;
         }
 
-        /* Paleta de Cores com Fundo Degradê */
+        /* Paleta de Cores */
         :root {
-            --color-bg-start: #543925;
-            --color-bg-end: #3e2a1c;
-            --color-text-light: #dcc5a1;
-            --color-text-dark: #543925;
-            --color-card-bg: rgba(255, 255, 255, 0.05);
-            --color-card-border: rgba(220, 197, 161, 0.2);
-            --color-mockup-frame: #3e2a1c;
+            --color-bg: #111111;
+            --color-text-light: #EAEAEA;
+            --color-text-dark-on-light: #111111;
+            --color-card-bg: rgba(0, 0, 0, 0.15);
+            --color-card-border: rgba(255, 255, 255, 0.1);
         }
 
-        body {
-            background-color: var(--color-bg-end);
-            background-image: linear-gradient(to bottom, var(--color-bg-start) 50%, var(--color-bg-end) 100%);
-            min-height: 100vh;
+        /* Estilo da Navegação Ativa */
+        .nav-link.active {
+            color: white;
+            border-bottom: 2px solid white;
         }
 
-        .text-light { color: var(--color-text-light); }
-        .bg-accent { background-color: var(--color-text-light); }
-        .text-accent-content { color: var(--color-text-dark); }
-        .hover\:bg-accent-dark:hover { background-color: #c9b592; }
-        .bg-accent-bar { background-color: var(--color-text-light); }
-        .text-accent-icons { color: var(--color-text-light); }
-        .bg-card { background-color: var(--color-card-bg); }
-        .border-card { border-color: var(--color-card-border); }
-        
-        /* Estilo do Mockup de iPhone Moderno */
-        .mockup-frame {
-            background-color: var(--color-mockup-frame);
-            border: 10px solid var(--color-mockup-frame);
-            border-radius: 40px;
-            position: relative;
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
+        /* Galeria minimalista inspirada em karliekloss.com */
+        .tab-button {
+            background: none;
+            border: none;
+            color: #E9B384;
+            font-size: 1.08rem;
+            font-weight: 500;
+            padding: 0 0 8px 0;
+            margin: 0 12px;
+            border-bottom: 2px solid transparent;
+            border-radius: 0;
+            box-shadow: none;
+            letter-spacing: 1px;
+            transition: border-color 0.2s, color 0.2s;
         }
-        .mockup-screen {
-            border-radius: 30px;
-            overflow: hidden;
-            position: relative;
-            background-color: #000;
-        }
-        .mockup-notch {
-            width: 120px;
-            height: 18px;
-            background-color: var(--color-mockup-frame);
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            border-bottom-left-radius: 1rem;
-            border-bottom-right-radius: 1rem;
-            z-index: 2;
-        }
-        .mockup-side-button {
-            position: absolute;
-            background-color: var(--color-mockup-frame);
-        }
-        .left-button-1 { top: 104px; left: -12px; height: 36px; width: 4px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; }
-        .left-button-2 { top: 158px; left: -12px; height: 36px; width: 4px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; }
-        .right-button { top: 122px; right: -12px; height: 54px; width: 4px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; }
-        
-        /* Estilos da Galeria com Animação de Arrastar */
         .tab-button.active {
-            background-color: var(--color-text-light);
-            color: var(--color-text-dark);
+            color: #E9B384;
+            border-bottom: 2.5px solid #E9B384;
+        }
+        .gallery-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 36px 32px;
+            margin-top: 0;
         }
         .gallery-content.sliding-in {
-            animation: slideInAnimation 0.5s ease-out forwards;
+            animation: slideInAnimation 0.6s ease-out forwards;
         }
         @keyframes slideInAnimation {
-            from { opacity: 0; transform: translateX(40px); }
-            to { opacity: 1; transform: translateX(0); }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        
-        /* Efeitos da Imagem de Perfil */
-        .profile-image-wrapper {
-            position: relative;
+        .portfolio-card {
+            background: #3a2617;
+            border-radius: 0.7rem;
+            overflow: hidden;
+            box-shadow: none;
+            transition: none;
+            padding: 12px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
         }
-        .profile-image-container {
-            position: relative;
-        }
-        .profile-image-container::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -2px;
-            height: 50%;
-            background-image: linear-gradient(to top, var(--color-bg-start), transparent);
-            pointer-events: none;
-            z-index: 3;
-        }
-        .profile-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 80%;
-            height: 80%;
-            background-color: var(--color-text-light);
-            border-radius: 50%;
-            filter: blur(60px);
-            z-index: 1;
-            transform: translate(-50%, -50%);
-            animation: pulseGlow 4s infinite ease-in-out;
-        }
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.05); }
+        .portfolio-card img, .portfolio-card video {
+            border-radius: 0.4rem;
+            box-shadow: none;
+            width: 100%;
+            aspect-ratio: 9/16;
+            object-fit: cover;
+            display: block;
+            background: none;
         }
 
         /* Animações de Scroll */
         .fade-in-section {
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
         .fade-in-section.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
         
-        /* Efeitos de Hover Interativos */
-        .interactive-mockup:hover {
-            transform: scale(1.05);
-        }
-        .fade-out-bottom {
-            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-        }
-        .portfolio-card {
-            max-width: 300px;
-            margin-left: auto;
-            margin-right: auto;
-            background: rgba(40, 30, 20, 0.45);
-            border: 2px solid var(--color-card-border);
-            border-radius: 2rem;
-            box-shadow: 0 8px 32px -4px rgba(60,40,20,0.25), 0 1.5px 8px 0 rgba(220,197,161,0.08);
-            transition: transform 0.25s cubic-bezier(.4,1.4,.6,1), box-shadow 0.25s, border-color 0.25s;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .portfolio-card:hover {
-            transform: scale(1.045) translateY(-4px);
-            box-shadow: 0 16px 48px -8px rgba(60,40,20,0.35), 0 2px 16px 0 rgba(220,197,161,0.18);
-            border-color: #e7cfa2;
-            outline: 2px solid #e7cfa2;
-            outline-offset: -4px;
-        }
-        .portfolio-card video,
-        .portfolio-card img {
+        /* Estilos da Nova Seção Hero */
+        .hero-content-wrapper {
+            position: relative;
             width: 100%;
-            aspect-ratio: 9/16;
-            border-radius: 2rem 2rem 0 0;
-            background: #000;
+            max-width: 450px; /* Controla o tamanho da imagem */
+            margin-top: 4rem; /* Empurra a imagem um pouco para baixo */
         }
-        .portfolio-card .badge-destaque {
+        .curved-text-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Permite clicar através do SVG */
+        }
+        .curved-text-svg {
+            width: 100%;
+            height: 100%;
+            fill: white;
+            font-family: 'Playfair Display', serif;
+            font-size: 52px; /* Ajuste o tamanho da fonte */
+            font-weight: 700;
+            letter-spacing: 12px; /* Ajuste o espaçamento */
+        }
+        /* Adicionando animação fade-in para o arco */
+        .fade-in-arc {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .fade-in-arc.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .img-gradient-wrapper {
+          position: relative;
+          display: inline-block;
+          width: 100%;
+          max-width: 450px;
+        }
+        .img-gradient-overlay {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 20;
+          background: linear-gradient(to top, #543925 0%, rgba(84,57,37,0.0) 30%);
+        }
+        .sidebar-hamburger {
+          position: fixed;
+          top: 24px;
+          left: 24px;
+          z-index: 110;
+          width: 48px;
+          height: 48px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 8px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          transition: z-index 0.3s;
+        }
+        .sidebar-hamburger span {
+          display: block;
+          height: 4px;
+          width: 100%;
+          background: #fff;
+          border-radius: 2px;
+          transition: 0.4s cubic-bezier(.77,0,.18,1);
+        }
+        .sidebar-hamburger.open span:nth-child(1) {
+          transform: rotate(45deg) translate(7px, 7px);
+        }
+        .sidebar-hamburger.open span:nth-child(2) {
+          opacity: 0;
+        }
+        .sidebar-hamburger.open span:nth-child(3) {
+          transform: rotate(-45deg) translate(7px, -7px);
+        }
+        .sidebar-menu {
+          position: fixed;
+          top: 0;
+          left: -320px;
+          width: 270px;
+          height: 100vh;
+          background: rgba(24,24,24,0.92);
+          box-shadow: 2px 0 32px #332216;
+          z-index: 120;
+          display: flex;
+          flex-direction: column;
+          padding: 40px 28px 28px 28px;
+          transition: left 0.45s cubic-bezier(.77,0,.18,1), background 0.3s;
+          backdrop-filter: blur(12px);
+        }
+        .sidebar-menu.open {
+          left: 0;
+        }
+        .sidebar-close {
+          background: #A47149;
+          color: #FFF;
+          border: none;
+          border-radius: 8px;
+          padding: 10px 24px;
+          font-weight: 500;
+          transition: background 0.2s, color 0.2s;
+        }
+        .sidebar-close:hover {
+          background: #E9B384;
+          color: #543925;
+        }
+        .sidebar-menu nav {
+          display: flex;
+          flex-direction: column;
+          gap: 32px;
+          margin-top: 70px;
+        }
+        .sidebar-menu nav a {
+          color: #fff;
+          font-size: 1.25rem;
+          text-decoration: none;
+          font-family: 'Inter', sans-serif;
+          letter-spacing: 2px;
+          padding: 8px 0 8px 8px;
+          border-radius: 8px;
+          position: relative;
+          transition: color 0.2s, background 0.2s;
+        }
+        .sidebar-menu nav a:hover,
+        .sidebar-menu nav a.active {
+          color: #ffe066;
+          background: rgba(255,224,102,0.08);
+        }
+        .sidebar-menu nav a.active::before {
+          content: '';
+          position: absolute;
+          left: -16px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 6px;
+          height: 32px;
+          border-radius: 4px;
+          background: linear-gradient(180deg, #ffe066 0%, #fffbe6 100%);
+          opacity: 0.8;
+        }
+        .sidebar-backdrop {
+          position: fixed;
+          inset: 0;
+          background: #0008;
+          z-index: 100;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.4s cubic-bezier(.77,0,.18,1);
+        }
+        .sidebar-backdrop.open {
+          opacity: 1;
+          pointer-events: all;
+        }
+        @media (max-width: 500px) {
+          .sidebar-menu { width: 90vw; min-width: 0; }
+        }
+        /* Links e destaques */
+        a, .sidebar-menu nav a {
+          color: #E9B384;
+          transition: color 0.2s, background 0.2s;
+        }
+        a:hover, .sidebar-menu nav a:hover {
+          color: #543925;
+          background: #E9B38422;
+        }
+        .sidebar-menu nav a.active {
+          color: #543925;
+          background: #E9B38499;
+        }
+        /* Botões */
+        .btn, .sidebar-close {
+          background: #A47149;
+          color: #FFF;
+          border: none;
+          border-radius: 8px;
+          padding: 10px 24px;
+          font-weight: 500;
+          transition: background 0.2s, color 0.2s;
+        }
+        .btn:hover, .sidebar-close:hover {
+          background: #E9B384;
+          color: #543925;
+        }
+        /* Elementos secundários */
+        .sidebar-menu {
+          background: rgba(24,24,24,0.92);
+        }
+        /* Footer e detalhes */
+        footer {
+          color: #E9B384;
+          background: #7C5E48;
+        }
+
+        /* Efeitos visuais de fundo */
+        
+        /* Brilhinhos estáticos apenas na hero */
+        .bg-sparkles {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 1;
+          overflow: hidden;
+        }
+        .sparkle {
+          position: absolute;
+          width: 3px;
+          height: 3px;
+          background: rgba(255, 255, 255, 0.8);
+          border-radius: 50%;
+          animation: twinkle 3s infinite ease-in-out;
+          box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+        }
+        .sparkle:nth-child(1) { left: 12%; top: 15%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { left: 28%; top: 25%; animation-delay: 0.5s; }
+        .sparkle:nth-child(3) { left: 45%; top: 12%; animation-delay: 1s; }
+        .sparkle:nth-child(4) { left: 62%; top: 30%; animation-delay: 1.5s; }
+        .sparkle:nth-child(5) { left: 78%; top: 18%; animation-delay: 2s; }
+        .sparkle:nth-child(6) { left: 88%; top: 35%; animation-delay: 2.5s; }
+        .sparkle:nth-child(7) { left: 15%; top: 45%; animation-delay: 0.3s; }
+        .sparkle:nth-child(8) { left: 35%; top: 55%; animation-delay: 0.8s; }
+        .sparkle:nth-child(9) { left: 55%; top: 48%; animation-delay: 1.3s; }
+        .sparkle:nth-child(10) { left: 75%; top: 52%; animation-delay: 1.8s; }
+        .sparkle:nth-child(11) { left: 92%; top: 45%; animation-delay: 2.3s; }
+        .sparkle:nth-child(12) { left: 8%; top: 65%; animation-delay: 0.7s; }
+        .sparkle:nth-child(13) { left: 25%; top: 75%; animation-delay: 1.2s; }
+        .sparkle:nth-child(14) { left: 42%; top: 68%; animation-delay: 1.7s; }
+        .sparkle:nth-child(15) { left: 58%; top: 78%; animation-delay: 2.2s; }
+        .sparkle:nth-child(16) { left: 82%; top: 72%; animation-delay: 0.4s; }
+        .sparkle:nth-child(17) { left: 95%; top: 85%; animation-delay: 0.9s; }
+        .sparkle:nth-child(18) { left: 18%; top: 88%; animation-delay: 1.4s; }
+        .sparkle:nth-child(19) { left: 38%; top: 92%; animation-delay: 1.9s; }
+        .sparkle:nth-child(20) { left: 65%; top: 88%; animation-delay: 2.4s; }
+        @keyframes twinkle {
+          0%, 100% {
+            opacity: 0.3;
+            transform: scale(0.8);
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.2);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+          }
+        }
+        /* Brilho animado atrás da foto na hero */
+        .hero-glow {
+            position: absolute;
+            left: 50%;
+            top: 38%;
+            transform: translate(-50%, -50%);
+            width: 420px;
+            height: 520px;
+            z-index: 2;
+            pointer-events: none;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,245,210,0.45) 0%, rgba(84,57,37,0.18) 60%, rgba(84,57,37,0.0) 100%);
+            opacity: 0.95;
+            animation: heroGlowPulse 3.5s ease-in-out infinite alternate;
+        }
+        @keyframes heroGlowPulse {
+            0% { opacity: 0.95; }
+            40% { opacity: 1; }
+            60% { opacity: 0.35; }
+            100% { opacity: 0.95; }
+        }
+        /* Efeito de story Instagram na foto do sobre */
+        .story-avatar-wrapper {
             display: inline-block;
-            background: var(--color-text-light);
-            color: var(--color-text-dark);
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-bottom: 0.5rem;
+            border-radius: 50%;
+            padding: 0;
+            transition: box-shadow 0.2s;
         }
-        .card-saude video {
-            max-height: 600px;
-            object-fit: contain;
+        @keyframes storyBorderSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        .card-saude {
-            max-width: 300px;
-            margin-left: auto;
-            margin-right: auto;
+        .story-avatar-border {
+            position: relative;
+            background: conic-gradient(#f9ce34, #ee2a7b, #6228d7, #f9ce34 100%);
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: box-shadow 0.2s;
+            box-shadow: 0 0 0 0 rgba(0,0,0,0.0);
+            overflow: visible;
         }
-        /* Cards de imagem com tamanho maior */
-        .portfolio-card img[src*="beleza01.jpg"],
-        .portfolio-card img[src*="beleza02.jpg"],
-        .portfolio-card img[src*="beleza03.jpg"],
-        .portfolio-card img[src*="beleza.jpg"],
-        .portfolio-card img[src*="moda01.jpg"],
-        .portfolio-card img[src*="Gastronomia01.jpg"],
-        .portfolio-card img[src*="saude.jpg"] {
-            max-width: 400px;
-            object-fit: cover;
+        .story-avatar-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            border-radius: 50%;
+            background: inherit;
+            animation: storyBorderSpin 6s linear infinite;
         }
+        .story-avatar-img {
+            position: relative;
+            z-index: 2;
+        }
+        .story-avatar-wrapper:hover .story-avatar-border {
+            box-shadow: 0 0 0 6px rgba(249,206,52,0.15);
+        }
+
     </style>
 </head>
-<body class="text-light">
+<body>
+    <!-- Efeitos visuais de fundo -->
+    <button class="sidebar-hamburger" id="openSidebar" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <div class="sidebar-menu" id="sidebar">
+      <button class="sidebar-close" id="closeSidebar" aria-label="Fechar menu">&times;</button>
+      <nav>
+        <a href="#hero">Capa</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#portfolio">Portfólio</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </div>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
     <!-- Cabeçalho e Navegação -->
-    <header class="bg-[#543925]/80 backdrop-blur-sm sticky top-0 z-50 border-b border-card">
-        <div class="container mx-auto max-w-6xl px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-xl font-bold text-white">Suhlamita Santos</a>
-            <nav class="hidden md:flex space-x-8">
-                <a href="#sobre" class="text-light/70 hover:text-white transition-colors">Sobre</a>
-                <a href="#portfolio" class="text-light/70 hover:text-white transition-colors">Portfólio</a>
-                <a href="#contato" class="text-light/70 hover:text-white transition-colors">Contato</a>
-            </nav>
-            <a href="#contato" class="hidden md:block bg-accent text-accent-content px-5 py-2 rounded-lg hover:bg-accent-dark transition-colors">Vamos Criar Juntos</a>
-        </div>
-    </header>
-
     <main>
-        <!-- Seção Hero -->
-        <section id="hero" class="container mx-auto max-w-6xl px-6 py-20 md:py-32 flex flex-col md:flex-row items-center">
-            <div class="md:w-1/2 text-center md:text-left">
-                <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight">Conteúdo que conecta, inspira e converte.</h1>
-                <p class="mt-6 text-lg text-light/80 max-w-lg mx-auto md:mx-0">Sou UGC Creator e ajudo marcas a construírem uma comunicação autêntica e humana através de vídeos estratégicos e criativos.</p>
-                <div class="mt-8 flex justify-center md:justify-start gap-4">
-                    <a href="#portfolio" class="bg-accent text-accent-content px-8 py-3 rounded-lg hover:bg-accent-dark transition-all duration-300 transform hover:scale-105">Veja meu trabalho</a>
-                    <a href="#sobre" class="bg-card text-light px-8 py-3 rounded-lg hover:bg-white/20 transition-colors border border-card">Saiba mais</a>
-                </div>
+        <!-- Seção Hero (Novo Design) -->
+        <section id="hero" class="min-h-screen flex items-center justify-center p-4" style="position: relative;">
+            <!-- Brilhinhos estáticos apenas na hero -->
+            <div class="bg-sparkles">
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
+              <div class="sparkle"></div>
             </div>
-            <div class="md:w-1/2 mt-12 md:mt-0 flex justify-center">
-                <div style="position: relative; display: inline-block;">
-                    <div class="profile-glow"></div>
-                    <img src="capa.png" 
-                         alt="Foto de Suhlamita Santos" 
-                         class="w-auto h-[600px] md:h-[750px] object-contain block fade-out-bottom -mt-24"
-                         style="position: relative; z-index: 2;"
-                         onerror="this.onerror=null;this.src='https://placehold.co/400x500/543925/dcc5a1?text=Imagem+Indisponível';">
-                </div>
+            <div class="hero-content-wrapper relative" style="margin-top: -150px;">
+              <div class="img-gradient-wrapper" style="position: relative;">
+                <div class="hero-glow"></div>
+                <img
+                  src="capa.png"
+                  alt="Foto de Suhlamita Santos"
+                  class="w-full h-auto object-cover relative z-10"
+                  onerror="this.onerror=null;this.src='https://placehold.co/450x600/111111/FFFFFF?text=Imagem+Indisponível';"
+                />
+                <div class="img-gradient-overlay"></div>
+              </div>
+              <div class="curved-text-container fade-in-arc" style="top: 120px; left: 0; width: 100%; height: 330px; display: flex; justify-content: center; align-items: flex-start; pointer-events: none; position: absolute;">
+                <svg class="curved-text-svg" viewBox="0 0 900 300" style="width: 700px; height: 300px;">
+                  <defs>
+                    <!-- Arco semicircular bem grande -->
+                    <path id="text-curve" d="M 200,280 A 300,300 0 0,1 800,280" fill="transparent"/>
+                  </defs>
+                  <text style="font-size: 120px; letter-spacing: 15px; font-family: 'Playfair Display', serif;">
+                    <textPath xlink:href="#text-curve" startOffset="50%" text-anchor="middle" id="arc-text"></textPath>
+                  </text>
+                </svg>
+              </div>
             </div>
-        </section>
+          </section>
+          
 
         <!-- Seção Sobre Mim -->
-        <section id="sobre" class="py-20 md:py-28 bg-card fade-in-section">
-            <div class="container mx-auto max-w-4xl px-6 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-white">Olá, sou a Suhlamita Santos</h2>
-                <div class="w-20 h-1 bg-accent-bar mx-auto mt-4 mb-8 rounded"></div>
-                <p class="text-light/80 leading-relaxed text-lg">Sou criadora de conteúdo e UGC Creator especializada em produzir vídeos autênticos, criativos e estratégicos que conectam marcas ao seu público de forma real e envolvente. Tenho um olhar atento para tendências, estética e narrativa, e meu foco é desenvolver conteúdos que despertam interesse, criam identificação e geram resultados.</p>
-                <p class="mt-4 text-light/80 leading-relaxed text-lg">Trabalho com marcas que valorizam a originalidade e querem se destacar no digital com uma comunicação próxima, atual e humana. Acredito no poder dos conteúdos reais que inspiram confiança — e é isso que entrego em cada projeto.</p>
+        <section id="sobre" class="py-20 md:py-32 fade-in-section" style="background: #332216;">
+            <div class="container mx-auto max-w-6xl px-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12 items-center">
+                    <div class="text-center lg:text-right relative">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white">Quem sou eu?</h2>
+                        <p class="text-gray-300 leading-relaxed mt-4">Olá! Sou Suhlamita Santos, criadora de conteúdo e especialista em UGC com um olhar atento para tendências, estética e narrativa.</p>
+                    </div>
+                    <div class="flex justify-center order-first lg:order-none">
+                        <a href="https://www.instagram.com/suhlamita.santos?igsh=MWJ4aXQ5NTljM3dtNg==" target="_blank" rel="noopener" class="story-avatar-wrapper">
+                            <div class="story-avatar-border">
+                                <img src="urso-sem-curso.jpg" 
+                                     alt="Foto de Suhlamita Santos" 
+                                     class="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full shadow-lg story-avatar-img">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="text-center lg:text-left relative">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white">O que é UGC?</h2>
+                        <p class="text-gray-300 leading-relaxed mt-4">UGC (User-Generated Content) é o conteúdo autêntico criado por pessoas reais. Ajudo marcas a se conectarem com seu público de forma genuína e humana.</p>
+                        <a href="#contato" class="inline-block mt-6 px-6 py-2 border border-gray-400 text-gray-300 rounded-full hover:bg-white hover:text-black transition-colors font-sans text-sm">Trabalhe comigo</a>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- Abas de navegação dos nichos -->
-        <div id="tabs-container" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
-            <button data-niche="beleza" class="tab-button active px-4 py-2 rounded-lg border border-card transition-colors">Beleza</button>
-            <button data-niche="moda" class="tab-button px-4 py-2 rounded-lg border border-card transition-colors">Moda</button>
-            <button data-niche="lifestyle" class="tab-button px-4 py-2 rounded-lg border border-card transition-colors">Lifestyle</button>
-            <button data-niche="gastronomia" class="tab-button px-4 py-2 rounded-lg border border-card transition-colors">Gastronomia</button>
-            <button data-niche="saude" class="tab-button px-4 py-2 rounded-lg border border-card transition-colors">Saúde</button>
-        </div>
-
-        <!-- Conteúdo dos nichos -->
-        <div id="gallery-wrapper">
-            <!-- Beleza -->
-            <div id="gallery-beleza" class="gallery-content">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="portfolio-card">
-                        <img src="beleza01.jpg" alt="Beleza 01" class="w-full object-contain rounded-2xl">
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Beleza 01</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-card">
-                        <img src="beleza02.jpg" alt="Beleza 02" class="w-full object-contain rounded-2xl">
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Beleza 02</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-card">
-                        <img src="beleza03.jpg" alt="Beleza 03" class="w-full object-contain rounded-2xl">
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Beleza 03</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-card">
-                        <img src="beleza.jpg" alt="Beleza" class="w-full object-contain rounded-2xl">
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Beleza</p>
-                        </div>
-                    </div>
-                    <!-- Vídeo de beleza -->
-                    <div class="portfolio-card">
-                        <video controls class="w-full rounded-2xl">
-                            <source src="beleza.mp4" type="video/mp4">
-                            Seu navegador não suporta vídeo.
-                        </video>
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Vídeo Beleza</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-card">
-                        <video controls class="w-full rounded-2xl">
-                            <source src="beleza1.mp4" type="video/mp4">
-                            Seu navegador não suporta vídeo.
-                        </video>
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Vídeo Beleza 1</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-card">
-                        <img src="beleza04.jpg" alt="Beleza 04" class="w-full object-contain rounded-2xl">
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Beleza 04</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-card">
-                        <video controls class="w-full rounded-2xl">
-                            <source src="beleza04.mp4" type="video/mp4">
-                            Seu navegador não suporta vídeo.
-                        </video>
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Vídeo Beleza 04</p>
-                        </div>
-                    </div>
-                    <!-- Adicione mais cards aqui -->
+        <!-- Seção Portfólio com Galeria -->
+        <section id="portfolio" class="py-20 md:py-32 fade-in-section">
+            <div class="container mx-auto max-w-7xl px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold" style="color: #fff; letter-spacing: 1px; font-family: 'Playfair Display', serif; font-weight: 700;">Portfólio</h2>
+                </div>
+                <nav id="tabs-container" class="flex justify-center gap-10 mb-10" style="font-family: 'Inter', sans-serif;">
+                    <button data-niche="beleza" class="tab-button active">Beleza</button>
+                    <button data-niche="moda" class="tab-button">Moda</button>
+                    <button data-niche="lifestyle" class="tab-button">Lifestyle</button>
+                    <button data-niche="gastronomia" class="tab-button">Gastronomia</button>
+                    <button data-niche="saude" class="tab-button">Saúde</button>
+                </nav>
+                <div id="gallery-wrapper" class="mx-auto" style="max-width: 1100px;">
+                    <div id="gallery-beleza" class="gallery-content"></div>
+                    <div id="gallery-moda" class="gallery-content hidden"></div>
+                    <div id="gallery-lifestyle" class="gallery-content hidden"></div>
+                    <div id="gallery-gastronomia" class="gallery-content hidden"></div>
+                    <div id="gallery-saude" class="gallery-content hidden"></div>
                 </div>
             </div>
-            <!-- Moda -->
-            <div id="gallery-moda" class="gallery-content hidden">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="portfolio-card">
-                        <img src="moda01.jpg" alt="Moda 01" class="w-full object-cover rounded-2xl">
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Moda 01</p>
-                        </div>
-                    </div>
-                    <!-- Adicione seus cards aqui -->
-                </div>
-            </div>
-            <!-- Lifestyle -->
-            <div id="gallery-lifestyle" class="gallery-content hidden">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Adicione seus cards aqui -->
-                </div>
-            </div>
-            <!-- Gastronomia -->
-            <div id="gallery-gastronomia" class="gallery-content hidden">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="portfolio-card">
-                        <img src="Gastronomia01.jpg" alt="Gastronomia 01" class="w-full object-contain rounded-2xl">
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Gastronomia 01</p>
-                        </div>
-                    </div>
-                    <!-- Adicione seus cards aqui -->
-                </div>
-            </div>
-            <!-- Saúde -->
-            <div id="gallery-saude" class="gallery-content hidden">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="portfolio-card">
-                        <video controls class="w-full rounded-2xl">
-                            <source src="Saude.mp4" type="video/mp4">
-                            Seu navegador não suporta vídeo.
-                        </video>
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Vídeo Vitaminas Neo Quimica</p>
-                        </div>
-                    </div>
-                    <div class="portfolio-card">
-                        <img src="saude.jpg" alt="Saúde" class="w-full object-contain rounded-2xl">
-                        <div class="p-4 w-full text-center">
-                            <p class="text-light/90 font-semibold mb-2">Saúde</p>
-                        </div>
-                    </div>
-                    <!-- Adicione mais cards aqui -->
-                </div>
-            </div>
-        </div>
+        </section>
 
         <!-- Seção de Contato -->
-        <section id="contato" class="py-20 md:py-28 fade-in-section">
+        <section id="contato" class="py-20 md:py-32 fade-in-section" style="background: #332216;">
             <div class="container mx-auto max-w-4xl px-6 text-center">
-                <h2 class="text-3xl md:text-4xl font-bold text-white">Vamos criar juntos?</h2>
-                <p class="mt-4 text-lg text-light/80 max-w-2xl mx-auto">Se sua marca valoriza a originalidade e busca uma comunicação humana e impactante, vamos conversar. Estou pronta para criar algo incrível com você.</p>
-                <a href="mailto:contato@suhlamita.com" class="mt-8 inline-block bg-accent text-accent-content text-lg px-10 py-4 rounded-lg hover:bg-accent-dark hover:text-white transition-all duration-300 transform hover:scale-105">
+                <h2 class="text-4xl md:text-5xl font-bold text-white">Vamos criar juntos?</h2>
+                <p class="mt-4 text-lg text-gray-300 max-w-2xl mx-auto">Se sua marca valoriza a originalidade e busca uma comunicação humana e impactante, vamos conversar. Estou pronta para criar algo incrível com você.</p>
+                <a href="mailto:Santossulamyta56@gmail.com" class="mt-8 inline-block bg-white text-black text-lg px-10 py-4 rounded-full hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 font-sans">
                     Enviar um e-mail
                 </a>
                 <div class="mt-12">
-                    <p class="text-light/80">Ou me encontre nas redes sociais:</p>
+                    <p class="text-gray-400">Ou me encontre nas redes sociais:</p>
                     <div class="flex justify-center gap-6 mt-4">
-                        <a href="https://www.instagram.com/suhlamita.santos?igsh=MWJ4aXQ5NTljM3dtNg==" target="_blank" rel="noopener" aria-label="Instagram">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram"><rect width="20" height="20" x="2" y="2" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                        <a href="https://www.instagram.com/suhlamita.santos?igsh=MWJ4aXQ5NTljM3dtNg==" target="_blank" rel="noopener" aria-label="Instagram" class="text-gray-400 hover:text-white transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
                         </a>
-                        <a href="https://www.tiktok.com/@suh.santoss3?_t=ZM-8xrSWFQrQV4&_r=1" target="_blank" rel="noopener" aria-label="TikTok">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-music-2"><circle cx="8" cy="18" r="4"/><path d="M12 18V2l7 4"/><circle cx="20" cy="6" r="2"/></svg>
+                        <a href="https://www.tiktok.com/@suh.santoss3?_t=ZM-8xrSWFQrQV4&_r=1" target="_blank" rel="noopener" aria-label="TikTok" class="text-gray-400 hover:text-white transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 48 48" fill="none"><g><path d="M34.5 6c.2 2.7 1.2 5.2 3 7.1 1.8 1.8 4.3 2.8 7 3v6.1c-2.7-.1-5.3-.7-7.7-1.9v13.7c0 7.2-5.8 13-13 13s-13-5.8-13-13 5.8-13 13-13c.5 0 1 .1 1.5.1v6.2c-.5-.1-1-.1-1.5-.1-3.7 0-6.8 3-6.8 6.8s3 6.8 6.8 6.8 6.8-3 6.8-6.8V6h6.4Z" fill="currentColor"/></g></svg>
                         </a>
-                        <a href="mailto:Santossulamyta56@gmail.com" aria-label="E-mail">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-mail"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22,6 12,13 2,6"/></svg>
-                        </a>
-                    </div>
-                    <div class="mt-4">
-                        <a href="mailto:Santossulamyta56@gmail.com" class="text-accent-content underline hover:text-accent">Santossulamyta56@gmail.com</a>
                     </div>
                 </div>
             </div>
@@ -418,41 +564,83 @@
     </main>
 
     <!-- Rodapé -->
-    <footer class="bg-transparent">
-        <div class="container mx-auto max-w-6xl px-6 py-6 text-center text-light/70">
-            <p>&copy; 2025 Suhlamita Santos. Todos os direitos reservados.</p>
+    <footer class="bg-transparent border-t border-gray-800">
+        <div class="container mx-auto max-w-6xl px-6 py-6 text-center text-gray-500 text-sm">
+            <p>&copy; 2024 Suhlamita Santos. Todos os direitos reservados.</p>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Animação de Scroll
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
-                    }
-                });
-            }, {
-                threshold: 0.1
-            });
+            // Lógica da Galeria de Portfólio
+            const portfolioData = {
+                beleza: {
+                    items: [
+                        { type: 'photo', src: 'beleza.jpg', text: 'Beleza 1' },
+                        { type: 'photo', src: 'beleza01.jpg', text: 'Beleza 2' },
+                        { type: 'photo', src: 'beleza02.jpg', text: 'Beleza 3' },
+                        { type: 'photo', src: 'beleza03.jpg', text: 'Beleza 4' },
+                        { type: 'photo', src: 'beleza04.jpg', text: 'Beleza 5' },
+                        { type: 'video', src: 'beleza.mp4', text: 'Vídeo Beleza 1' },
+                        { type: 'video', src: 'beleza1.mp4', text: 'Vídeo Beleza 2' },
+                        { type: 'video', src: 'beleza04.mp4', text: 'Vídeo Beleza 3' }
+                    ]
+                },
+                moda: {
+                    items: [
+                        { type: 'photo', src: 'moda01.jpg', text: 'Moda 1' }
+                    ]
+                },
+                lifestyle: {
+                    items: []
+                },
+                gastronomia: {
+                    items: [
+                        { type: 'photo', src: 'Gastronomia01.jpg', text: 'Gastronomia 1' }
+                    ]
+                },
+                saude: {
+                    items: [
+                        { type: 'photo', src: 'saude.jpg', text: 'Saúde 1' },
+                        { type: 'video', src: 'Saude.mp4', text: 'Vídeo Saúde 1' }
+                    ]
+                }
+            };
 
-            const sections = document.querySelectorAll('.fade-in-section');
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-
-            // Sistema de abas dos nichos
-            const tabsContainer = document.getElementById('tabs-container');
-            const galleryWrapper = document.getElementById('gallery-wrapper');
-            const tabs = tabsContainer.querySelectorAll('.tab-button');
-            const galleries = galleryWrapper.querySelectorAll('.gallery-content');
-
-            // Exibe a primeira galeria por padrão
-            const initialGallery = document.getElementById('gallery-beleza');
-            if(initialGallery) {
-                initialGallery.classList.remove('hidden');
+            function createPortfolioCard(item) {
+                if (item.type === 'photo') {
+                    return `
+                        <div class="portfolio-card">
+                            <img src="${item.src}" alt="${item.text}">
+                        </div>
+                    `;
+                }
+                if (item.type === 'video') {
+                    return `
+                        <div class="portfolio-card">
+                            <video src="${item.src}" controls playsinline preload="metadata" style="width:100%; aspect-ratio: 9/16; border-radius: 0.4rem; background: #222;"></video>
+                        </div>
+                    `;
+                }
+                return '';
             }
+
+            function renderGallery(niche) {
+                const galleryContainer = document.getElementById(`gallery-${niche}`);
+                const data = portfolioData[niche];
+                if (!galleryContainer || !data) return;
+
+                let content = `
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+                        ${data.items.map(item => createPortfolioCard(item)).join('')}
+                    </div>
+                `;
+                galleryContainer.innerHTML = content;
+            }
+
+            const tabsContainer = document.getElementById('tabs-container');
+            const tabs = tabsContainer.querySelectorAll('.tab-button');
+            const galleries = document.querySelectorAll('.gallery-content');
 
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -465,17 +653,108 @@
                     const niche = tab.dataset.niche;
                     galleries.forEach(g => {
                         g.classList.add('hidden');
+                        g.classList.remove('sliding-in');
                     });
 
                     const targetGallery = document.getElementById(`gallery-${niche}`);
                     if (targetGallery) {
                         targetGallery.classList.remove('hidden');
+                        void targetGallery.offsetWidth;
+                        targetGallery.classList.add('sliding-in');
                     }
                 });
             });
+
+            // Renderizar todas as galerias inicialmente
+            Object.keys(portfolioData).forEach(niche => renderGallery(niche));
+            
+            // Ativar a primeira aba
+            document.querySelector('.tab-button[data-niche="beleza"]').click();
+
+
+            // Animação de Scroll para seções
+            const sections = document.querySelectorAll('.fade-in-section');
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            sections.forEach(section => sectionObserver.observe(section));
+
+            // Lógica para destacar navegação com scroll
+            const navLinks = document.querySelectorAll('.nav-link');
+            const scrollSections = document.querySelectorAll('main section');
+            const navObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: "-50% 0px -50% 0px" });
+            scrollSections.forEach(section => navObserver.observe(section));
+
+            // Fade-in do arco UGC PORTFOLIO
+            const arc = document.querySelector('.fade-in-arc');
+            setTimeout(() => {
+              arc.classList.add('visible');
+            }, 300);
+
+            // Animação letra por letra do arco
+            const arcText = "UGC CREATOR";
+            const arcTextPath = document.getElementById('arc-text');
+            let arcIndex = 0;
+            function typeArcLetter() {
+                if (arcIndex <= arcText.length) {
+                    arcTextPath.textContent = arcText.slice(0, arcIndex);
+                    arcIndex++;
+                    setTimeout(typeArcLetter, 120); // ajuste a velocidade aqui (ms)
+                }
+            }
+            typeArcLetter();
+
         });
     </script>
 
+<script>
+    const openBtn = document.getElementById('openSidebar');
+    const closeBtn = document.getElementById('closeSidebar');
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    const links = sidebar.querySelectorAll('nav a');
+
+    function openSidebar() {
+      sidebar.classList.add('open');
+      backdrop.classList.add('open');
+      openBtn.classList.add('open');
+    }
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      backdrop.classList.remove('open');
+      openBtn.classList.remove('open');
+    }
+    openBtn.addEventListener('click', openSidebar);
+    closeBtn.addEventListener('click', closeSidebar);
+    backdrop.addEventListener('click', closeSidebar);
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSidebar();
+    });
+
+    // Destacar link ativo ao clicar
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        links.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+        closeSidebar();
+      });
+    });
+  </script>
+
 </body>
 </html>
-
