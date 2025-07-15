@@ -7,127 +7,170 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Adicionando Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Estilos para fontes personalizadas */
+        /* Estilos Globais e Fontes */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #543925;
             color: #F5E9DA;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         h1, h2, h3, .font-heading {
             font-family: 'Playfair Display', serif;
             color: #FFFFFF;
         }
-        /* Efeito de scroll suave */
-        html, body {
+        html {
             scroll-behavior: smooth;
         }
 
-        /* Paleta de Cores */
-        :root {
-            --color-bg: #111111;
-            --color-text-light: #EAEAEA;
-            --color-text-dark-on-light: #111111;
-            --color-card-bg: rgba(0, 0, 0, 0.15);
-            --color-card-border: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Estilo da Navegação Ativa */
-        .nav-link.active {
-            color: white;
-            border-bottom: 2px solid white;
-        }
-
-        /* Galeria minimalista inspirada em karliekloss.com */
-        .tab-button {
-            background: none;
-            border: none;
-            color: #E9B384;
-            font-size: 1.08rem;
-            font-weight: 500;
-            padding: 0 0 8px 0;
-            margin: 0 12px;
-            border-bottom: 2px solid transparent;
-            border-radius: 0;
-            box-shadow: none;
-            letter-spacing: 1px;
-            transition: border-color 0.2s, color 0.2s;
-        }
-        .tab-button.active {
-            color: #E9B384;
-            border-bottom: 2.5px solid #E9B384;
-        }
-        .gallery-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 36px 32px;
-            margin-top: 0;
-        }
-        .gallery-content.sliding-in {
-            animation: slideInAnimation 0.6s ease-out forwards;
-        }
-        @keyframes slideInAnimation {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .portfolio-card {
-            background: #3a2617;
-            border-radius: 0.7rem;
+        /* Efeito de Fundo com Brilhos */
+        .bg-sparkles {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 1;
             overflow: hidden;
-            box-shadow: none;
-            transition: none;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-        .portfolio-card img, .portfolio-card video {
-            border-radius: 0.4rem;
-            box-shadow: none;
-            width: 100%;
-            aspect-ratio: 9/16;
-            object-fit: cover;
-            display: block;
-            background: none;
+        .sparkle {
+            position: absolute;
+            width: 3px; height: 3px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: twinkle 4s infinite ease-in-out;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+        }
+        .sparkle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { left: 20%; top: 80%; animation-delay: 0.5s; }
+        .sparkle:nth-child(3) { left: 30%; top: 50%; animation-delay: 1s; }
+        .sparkle:nth-child(4) { left: 40%; top: 10%; animation-delay: 1.5s; }
+        .sparkle:nth-child(5) { left: 50%; top: 90%; animation-delay: 2s; }
+        .sparkle:nth-child(6) { left: 60%; top: 30%; animation-delay: 2.5s; }
+        .sparkle:nth-child(7) { left: 70%; top: 70%; animation-delay: 3s; }
+        .sparkle:nth-child(8) { left: 80%; top: 40%; animation-delay: 3.5s; }
+        .sparkle:nth-child(9) { left: 90%; top: 60%; animation-delay: 4s; }
+        .sparkle:nth-child(10) { left: 95%; top: 25%; animation-delay: 0.2s; }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
         }
 
         /* Animações de Scroll */
         .fade-in-section {
             opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: translateY(50px);
+            transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
         }
         .fade-in-section.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
-        
-        /* Estilos da Nova Seção Hero */
+
+        /* Menu Lateral (Sidebar) */
+        .sidebar-hamburger {
+            position: fixed;
+            top: 24px; left: 24px;
+            z-index: 1010;
+            width: 48px; height: 48px;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center; gap: 6px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        .sidebar-hamburger:hover { background: rgba(0,0,0,0.4); }
+        .sidebar-hamburger span {
+            display: block; height: 2px; width: 24px;
+            background: #fff; border-radius: 2px;
+            transition: 0.4s cubic-bezier(.77,0,.18,1);
+        }
+        .sidebar-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .sidebar-hamburger.open span:nth-child(2) { opacity: 0; }
+        .sidebar-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        .sidebar-menu {
+            position: fixed;
+            top: 0; left: -100%;
+            width: 280px; height: 100vh;
+            background: rgba(20, 15, 10, 0.9);
+            backdrop-filter: blur(16px);
+            box-shadow: 2px 0 32px rgba(0,0,0,0.5);
+            z-index: 1000;
+            padding: 80px 28px 28px 28px;
+            transition: left 0.45s cubic-bezier(.77,0,.18,1);
+        }
+        .sidebar-menu.open { left: 0; }
+        .sidebar-menu nav a {
+            display: block; color: #EAEAEA;
+            font-size: 1.1rem; font-weight: 500;
+            text-decoration: none; padding: 16px 12px;
+            margin-bottom: 8px; border-radius: 8px;
+            transition: color 0.3s, background-color 0.3s;
+        }
+        .sidebar-menu nav a:hover {
+            color: #FFF;
+            background-color: rgba(233, 179, 132, 0.1);
+        }
+        .sidebar-backdrop {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 999; opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.45s ease;
+        }
+        .sidebar-backdrop.open { opacity: 1; pointer-events: all; }
+
+        /* Seção Hero */
         .hero-content-wrapper {
             position: relative;
             width: 100%;
-            max-width: 450px; /* Controla o tamanho da imagem */
-            margin-top: 4rem; /* Empurra a imagem um pouco para baixo */
+            max-width: 450px;
+            margin-top: 4rem;
+        }
+        .img-gradient-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .img-gradient-overlay {
+            position: absolute; left: 0; top: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 20;
+            background: linear-gradient(to top, #543925 0%, rgba(84,57,37,0.0) 30%);
+        }
+        .hero-glow {
+            position: absolute; left: 50%; top: 38%;
+            transform: translate(-50%, -50%);
+            width: 420px; height: 520px;
+            z-index: 2; pointer-events: none;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,245,210,0.45) 0%, rgba(84,57,37,0.18) 60%, rgba(84,57,37,0.0) 100%);
+            opacity: 0.95;
+            animation: heroGlowPulse 3.5s ease-in-out infinite alternate;
+        }
+        @keyframes heroGlowPulse {
+            from { opacity: 0.35; transform: translate(-50%, -50%) scale(0.95); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
         }
         .curved-text-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* Permite clicar através do SVG */
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
         }
         .curved-text-svg {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             fill: white;
             font-family: 'Playfair Display', serif;
-            font-size: 52px; /* Ajuste o tamanho da fonte */
-            font-weight: 700;
-            letter-spacing: 12px; /* Ajuste o espaçamento */
+            font-size: 52px; font-weight: 700;
+            letter-spacing: 12px;
         }
-        /* Adicionando animação fade-in para o arco */
         .fade-in-arc {
           opacity: 0;
           transform: translateY(30px);
@@ -137,352 +180,232 @@
           opacity: 1;
           transform: translateY(0);
         }
-        .img-gradient-wrapper {
-          position: relative;
-          display: inline-block;
-          width: 100%;
-          max-width: 450px;
-        }
-        .img-gradient-overlay {
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-          z-index: 20;
-          background: linear-gradient(to top, #543925 0%, rgba(84,57,37,0.0) 30%);
-        }
-        .sidebar-hamburger {
-          position: fixed;
-          top: 24px;
-          left: 24px;
-          z-index: 110;
-          width: 48px;
-          height: 48px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          gap: 8px;
-          background: none;
-          border: none;
-          cursor: pointer;
-          transition: z-index 0.3s;
-        }
-        .sidebar-hamburger span {
-          display: block;
-          height: 4px;
-          width: 100%;
-          background: #fff;
-          border-radius: 2px;
-          transition: 0.4s cubic-bezier(.77,0,.18,1);
-        }
-        .sidebar-hamburger.open span:nth-child(1) {
-          transform: rotate(45deg) translate(7px, 7px);
-        }
-        .sidebar-hamburger.open span:nth-child(2) {
-          opacity: 0;
-        }
-        .sidebar-hamburger.open span:nth-child(3) {
-          transform: rotate(-45deg) translate(7px, -7px);
-        }
-        .sidebar-menu {
-          position: fixed;
-          top: 0;
-          left: -320px;
-          width: 270px;
-          height: 100vh;
-          background: rgba(24,24,24,0.92);
-          box-shadow: 2px 0 32px #332216;
-          z-index: 120;
-          display: flex;
-          flex-direction: column;
-          padding: 40px 28px 28px 28px;
-          transition: left 0.45s cubic-bezier(.77,0,.18,1), background 0.3s;
-          backdrop-filter: blur(12px);
-        }
-        .sidebar-menu.open {
-          left: 0;
-        }
-        .sidebar-close {
-          background: #A47149;
-          color: #FFF;
-          border: none;
-          border-radius: 8px;
-          padding: 10px 24px;
-          font-weight: 500;
-          transition: background 0.2s, color 0.2s;
-        }
-        .sidebar-close:hover {
-          background: #E9B384;
-          color: #543925;
-        }
-        .sidebar-menu nav {
-          display: flex;
-          flex-direction: column;
-          gap: 32px;
-          margin-top: 70px;
-        }
-        .sidebar-menu nav a {
-          color: #fff;
-          font-size: 1.25rem;
-          text-decoration: none;
-          font-family: 'Inter', sans-serif;
-          letter-spacing: 2px;
-          padding: 8px 0 8px 8px;
-          border-radius: 8px;
-          position: relative;
-          transition: color 0.2s, background 0.2s;
-        }
-        .sidebar-menu nav a:hover,
-        .sidebar-menu nav a.active {
-          color: #ffe066;
-          background: rgba(255,224,102,0.08);
-        }
-        .sidebar-menu nav a.active::before {
-          content: '';
-          position: absolute;
-          left: -16px;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 6px;
-          height: 32px;
-          border-radius: 4px;
-          background: linear-gradient(180deg, #ffe066 0%, #fffbe6 100%);
-          opacity: 0.8;
-        }
-        .sidebar-backdrop {
-          position: fixed;
-          inset: 0;
-          background: #0008;
-          z-index: 100;
-          opacity: 0;
-          pointer-events: none;
-          transition: opacity 0.4s cubic-bezier(.77,0,.18,1);
-        }
-        .sidebar-backdrop.open {
-          opacity: 1;
-          pointer-events: all;
-        }
-        @media (max-width: 500px) {
-          .sidebar-menu { width: 90vw; min-width: 0; }
-        }
-        /* Links e destaques */
-        a, .sidebar-menu nav a {
-          color: #E9B384;
-          transition: color 0.2s, background 0.2s;
-        }
-        a:hover, .sidebar-menu nav a:hover {
-          color: #543925;
-          background: #E9B38422;
-        }
-        .sidebar-menu nav a.active {
-          color: #543925;
-          background: #E9B38499;
-        }
-        /* Botões */
-        .btn, .sidebar-close {
-          background: #A47149;
-          color: #FFF;
-          border: none;
-          border-radius: 8px;
-          padding: 10px 24px;
-          font-weight: 500;
-          transition: background 0.2s, color 0.2s;
-        }
-        .btn:hover, .sidebar-close:hover {
-          background: #E9B384;
-          color: #543925;
-        }
-        /* Elementos secundários */
-        .sidebar-menu {
-          background: rgba(24,24,24,0.92);
-        }
-        /* Footer e detalhes */
-        footer {
-          color: #E9B384;
-          background: #7C5E48;
-        }
 
-        /* Efeitos visuais de fundo */
-        
-        /* Brilhinhos estáticos apenas na hero */
-        .bg-sparkles {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-          z-index: 1;
-          overflow: hidden;
-        }
-        .sparkle {
-          position: absolute;
-          width: 3px;
-          height: 3px;
-          background: rgba(255, 255, 255, 0.8);
-          border-radius: 50%;
-          animation: twinkle 3s infinite ease-in-out;
-          box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
-        }
-        .sparkle:nth-child(1) { left: 12%; top: 15%; animation-delay: 0s; }
-        .sparkle:nth-child(2) { left: 28%; top: 25%; animation-delay: 0.5s; }
-        .sparkle:nth-child(3) { left: 45%; top: 12%; animation-delay: 1s; }
-        .sparkle:nth-child(4) { left: 62%; top: 30%; animation-delay: 1.5s; }
-        .sparkle:nth-child(5) { left: 78%; top: 18%; animation-delay: 2s; }
-        .sparkle:nth-child(6) { left: 88%; top: 35%; animation-delay: 2.5s; }
-        .sparkle:nth-child(7) { left: 15%; top: 45%; animation-delay: 0.3s; }
-        .sparkle:nth-child(8) { left: 35%; top: 55%; animation-delay: 0.8s; }
-        .sparkle:nth-child(9) { left: 55%; top: 48%; animation-delay: 1.3s; }
-        .sparkle:nth-child(10) { left: 75%; top: 52%; animation-delay: 1.8s; }
-        .sparkle:nth-child(11) { left: 92%; top: 45%; animation-delay: 2.3s; }
-        .sparkle:nth-child(12) { left: 8%; top: 65%; animation-delay: 0.7s; }
-        .sparkle:nth-child(13) { left: 25%; top: 75%; animation-delay: 1.2s; }
-        .sparkle:nth-child(14) { left: 42%; top: 68%; animation-delay: 1.7s; }
-        .sparkle:nth-child(15) { left: 58%; top: 78%; animation-delay: 2.2s; }
-        .sparkle:nth-child(16) { left: 82%; top: 72%; animation-delay: 0.4s; }
-        .sparkle:nth-child(17) { left: 95%; top: 85%; animation-delay: 0.9s; }
-        .sparkle:nth-child(18) { left: 18%; top: 88%; animation-delay: 1.4s; }
-        .sparkle:nth-child(19) { left: 38%; top: 92%; animation-delay: 1.9s; }
-        .sparkle:nth-child(20) { left: 65%; top: 88%; animation-delay: 2.4s; }
-        @keyframes twinkle {
-          0%, 100% {
-            opacity: 0.3;
-            transform: scale(0.8);
-            box-shadow: 0 0 4px rgba(255, 255, 255, 0.4);
-          }
-          50% {
-            opacity: 1;
-            transform: scale(1.2);
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
-          }
-        }
-        /* Brilho animado atrás da foto na hero */
-        .hero-glow {
-            position: absolute;
-            left: 50%;
-            top: 38%;
-            transform: translate(-50%, -50%);
-            width: 420px;
-            height: 520px;
-            z-index: 2;
-            pointer-events: none;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255,245,210,0.45) 0%, rgba(84,57,37,0.18) 60%, rgba(84,57,37,0.0) 100%);
-            opacity: 0.95;
-            animation: heroGlowPulse 3.5s ease-in-out infinite alternate;
-        }
-        @keyframes heroGlowPulse {
-            0% { opacity: 0.95; }
-            40% { opacity: 1; }
-            60% { opacity: 0.35; }
-            100% { opacity: 0.95; }
-        }
-        /* Efeito de story Instagram na foto do sobre */
-        .story-avatar-wrapper {
-            display: inline-block;
-            border-radius: 50%;
-            padding: 0;
-            transition: box-shadow 0.2s;
-        }
-        @keyframes storyBorderSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        /* Seção Sobre com Avatar Story */
         .story-avatar-border {
             position: relative;
-            background: conic-gradient(#f9ce34, #ee2a7b, #6228d7, #f9ce34 100%);
-            padding: 4px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: box-shadow 0.2s;
-            box-shadow: 0 0 0 0 rgba(0,0,0,0.0);
-            overflow: visible;
+            padding: 4px; border-radius: 50%;
+            background: conic-gradient(#f9ce34, #ee2a7b, #6228d7, #f9ce34);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
         .story-avatar-border::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            z-index: 1;
+            content: ''; position: absolute;
+            inset: -2px; z-index: 1;
             border-radius: 50%;
             background: inherit;
             animation: storyBorderSpin 6s linear infinite;
         }
-        .story-avatar-img {
-            position: relative;
-            z-index: 2;
+        @keyframes storyBorderSpin {
+            to { transform: rotate(360deg); }
         }
-        .story-avatar-wrapper:hover .story-avatar-border {
-            box-shadow: 0 0 0 6px rgba(249,206,52,0.15);
+        .story-avatar-img {
+            position: relative; z-index: 2;
+        }
+        .story-avatar-border:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(238, 42, 123, 0.3);
         }
 
+        /* Processo Animado */
+        .process-step {
+            opacity: 0;
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .process-step.from-left { transform: translateX(-50px); }
+        .process-step.from-right { transform: translateX(50px); }
+        .process-step.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .process-dot {
+            transform: scale(0);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .process-dot.visible {
+            transform: scale(1);
+        }
+
+        /* Galeria do Portfólio */
+        .tab-button {
+            background: none; border: none;
+            color: #E9B384;
+            font-size: 1rem; font-weight: 600;
+            padding: 8px 16px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .tab-button:hover {
+            color: #FFFFFF;
+            transform: translateY(-2px);
+        }
+        .tab-button.active {
+            color: #FFFFFF;
+            border-bottom-color: #E9B384;
+        }
+        .portfolio-card {
+            position: relative;
+            background: #3a2617;
+            border-radius: 0.7rem;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+        }
+        .portfolio-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+        }
+        .portfolio-card img, .portfolio-card video {
+            width: 100%; height: 100%;
+            aspect-ratio: 9/16;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .portfolio-card:hover img, .portfolio-card:hover video {
+            transform: scale(1.05);
+        }
+        .card-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .portfolio-card:hover .card-overlay { opacity: 1; }
+        .card-title {
+            color: white; font-weight: 600;
+            font-size: 0.9rem;
+            transform: translateY(10px);
+            opacity: 0;
+            transition: transform 0.4s 0.1s ease, opacity 0.4s 0.1s ease;
+        }
+        .portfolio-card:hover .card-title {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .play-icon {
+            color: white;
+            width: 24px; height: 24px;
+            opacity: 0;
+            transition: opacity 0.4s 0.1s ease;
+        }
+        .portfolio-card:hover .play-icon { opacity: 1; }
+
+        /* Botões */
+        .btn-primary {
+            background: #E9B384; color: #543925;
+            border: none; border-radius: 999px;
+            padding: 12px 32px; font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(233, 179, 132, 0.2);
+        }
+        .btn-primary:hover {
+            background: #fff;
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(233, 179, 132, 0.4);
+        }
+        
+        /* Lightbox Modal */
+        #lightbox {
+            position: fixed; inset: 0;
+            z-index: 2000;
+            background-color: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #lightbox.active { opacity: 1; visibility: visible; }
+        #lightbox-content {
+            position: relative;
+            width: 90%; height: 90%;
+            max-width: 60vh;
+            max-height: 90vh;
+        }
+        #lightbox-content img, #lightbox-content video {
+            width: 100%; height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        #lightbox-close {
+            position: absolute;
+            top: -40px; right: 0;
+            color: white; font-size: 2.5rem;
+            background: none; border: none;
+            cursor: pointer; transition: transform 0.2s;
+        }
+        #lightbox-close:hover { transform: scale(1.1); }
+
+        /* Seção Métricas (NOVO DESIGN) */
+        .metric-card {
+            background-color: #332216;
+            padding: 1.5rem 2rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .metric-value {
+            font-family: 'Playfair Display', serif;
+            color: #E9B384;
+        }
+        .metric-label {
+            color: #D1C5B4;
+        }
+        .metric-growth {
+            color: #4ade80; /* Verde para crescimento */
+        }
     </style>
 </head>
-<body>
-    <!-- Efeitos visuais de fundo -->
+<body class="overflow-x-hidden">
+    
     <button class="sidebar-hamburger" id="openSidebar" aria-label="Abrir menu">
       <span></span><span></span><span></span>
     </button>
 
     <div class="sidebar-menu" id="sidebar">
-      <button class="sidebar-close" id="closeSidebar" aria-label="Fechar menu">&times;</button>
       <nav>
-        <a href="#hero">Capa</a>
+        <a href="#hero">Início</a>
         <a href="#sobre">Sobre</a>
+        <a href="#servicos">Serviços</a>
+        <a href="#processo">Processo</a>
+        <a href="#metricas">Métricas</a>
         <a href="#portfolio">Portfólio</a>
         <a href="#contato">Contato</a>
       </nav>
     </div>
     <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-    <!-- Cabeçalho e Navegação -->
     <main>
-        <!-- Seção Hero (Novo Design) -->
-        <section id="hero" class="min-h-screen flex items-center justify-center p-4" style="position: relative;">
-            <!-- Brilhinhos estáticos apenas na hero -->
+        <!-- Seção Hero -->
+        <section id="hero" class="min-h-screen flex items-center justify-center p-4 relative">
             <div class="bg-sparkles">
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
-              <div class="sparkle"></div>
+              <div class="sparkle"></div><div class="sparkle"></div><div class="sparkle"></div><div class="sparkle"></div><div class="sparkle"></div><div class="sparkle"></div><div class="sparkle"></div><div class="sparkle"></div><div class="sparkle"></div><div class="sparkle"></div>
             </div>
-            <div class="hero-content-wrapper relative" style="margin-top: -150px;">
-              <div class="img-gradient-wrapper" style="position: relative;">
+            <div class="hero-content-wrapper relative" style="margin-top: -50px;">
+              <div class="img-gradient-wrapper">
                 <div class="hero-glow"></div>
                 <img
                   src="capa.png"
                   alt="Foto de Suhlamita Santos"
-                  class="w-full h-auto object-cover relative z-10"
+                  class="w-full h-auto object-cover relative z-10 rounded-2xl"
                   onerror="this.onerror=null;this.src='https://placehold.co/450x600/111111/FFFFFF?text=Imagem+Indisponível';"
                 />
                 <div class="img-gradient-overlay"></div>
               </div>
-              <div class="curved-text-container fade-in-arc" style="top: 120px; left: 0; width: 100%; height: 330px; display: flex; justify-content: center; align-items: flex-start; pointer-events: none; position: absolute;">
+              <div class="curved-text-container fade-in-arc" style="top: 120px; left: 0; width: 100%; height: 330px; display: flex; justify-content: center; align-items: flex-start;">
                 <svg class="curved-text-svg" viewBox="0 0 900 300" style="width: 700px; height: 300px;">
                   <defs>
-                    <!-- Arco semicircular bem grande -->
                     <path id="text-curve" d="M 200,280 A 300,300 0 0,1 800,280" fill="transparent"/>
                   </defs>
-                  <text style="font-size: 120px; letter-spacing: 15px; font-family: 'Playfair Display', serif;">
+                  <text style="font-size: 120px; letter-spacing: 15px;">
                     <textPath xlink:href="#text-curve" startOffset="50%" text-anchor="middle" id="arc-text"></textPath>
                   </text>
                 </svg>
@@ -490,72 +413,175 @@
             </div>
           </section>
           
-
         <!-- Seção Sobre Mim -->
         <section id="sobre" class="py-20 md:py-32 fade-in-section" style="background: #332216;">
             <div class="container mx-auto max-w-6xl px-6">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12 items-center">
-                    <div class="text-center lg:text-right relative">
-                        <h2 class="text-3xl md:text-4xl font-bold text-white">Quem sou eu?</h2>
-                        <p class="text-gray-300 leading-relaxed mt-4">Olá! Sou Suhlamita Santos, criadora de conteúdo e especialista em UGC com um olhar atento para tendências, estética e narrativa.</p>
-                    </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center">
                     <div class="flex justify-center order-first lg:order-none">
-                        <a href="https://www.instagram.com/suhlamita.santos?igsh=MWJ4aXQ5NTljM3dtNg==" target="_blank" rel="noopener" class="story-avatar-wrapper">
-                            <div class="story-avatar-border">
-                                <img src="urso-sem-curso.jpg" 
-                                     alt="Foto de Suhlamita Santos" 
-                                     class="w-64 h-64 md:w-80 md:h-80 object-cover rounded-full shadow-lg story-avatar-img">
-                            </div>
+                        <a href="https://www.instagram.com/suhlamita.santos?igsh=MWJ4aXQ5NTljM3dtNg==" target="_blank" rel="noopener" class="story-avatar-border">
+                             <img src="urso-sem-curso.jpg" 
+                                 alt="Foto de Suhlamita Santos" 
+                                 class="w-48 h-48 md:w-64 md:h-64 object-cover rounded-full shadow-lg story-avatar-img">
                         </a>
                     </div>
-                    <div class="text-center lg:text-left relative">
-                        <h2 class="text-3xl md:text-4xl font-bold text-white">O que é UGC?</h2>
-                        <p class="text-gray-300 leading-relaxed mt-4">UGC (User-Generated Content) é o conteúdo autêntico criado por pessoas reais. Ajudo marcas a se conectarem com seu público de forma genuína e humana.</p>
-                        <a href="#contato" class="inline-block mt-6 px-6 py-2 border border-gray-400 text-gray-300 rounded-full hover:bg-white hover:text-black transition-colors font-sans text-sm">Trabalhe comigo</a>
+                    <div class="text-center lg:text-left">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white font-heading">Conectando marcas e pessoas através da autenticidade.</h2>
+                        <p class="text-gray-300 leading-relaxed mt-6 max-w-xl mx-auto lg:mx-0">
+                            Olá! Sou Suhlamita Santos, criadora de conteúdo e especialista em UGC. Minha paixão é criar narrativas visuais que constroem uma ponte de confiança entre a marca e seu público.
+                        </p>
+                        <a href="#contato" class="inline-block mt-8 btn-primary">
+                            Vamos trabalhar juntos
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Seção Portfólio com Galeria -->
-        <section id="portfolio" class="py-20 md:py-32 fade-in-section">
+        <!-- Seção de Serviços -->
+        <section id="servicos" class="py-20 md:py-32 fade-in-section">
+            <div class="container mx-auto max-w-6xl px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold font-heading">Serviços</h2>
+                <p class="text-gray-400 mt-2 max-w-2xl mx-auto">Ofereço uma gama de soluções de conteúdo para conectar sua marca ao seu público de forma autêntica.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 text-left">
+                    <div class="bg-[#332216] p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                        <h3 class="font-heading text-xl font-bold text-white">Vídeos de Unboxing</h3>
+                        <p class="mt-2 text-gray-300">A primeira impressão é a que fica. Crio vídeos de unboxing que geram expectativa e mostram seu produto em detalhes.</p>
+                    </div>
+                    <div class="bg-[#332216] p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                        <h3 class="font-heading text-xl font-bold text-white">Tutoriais e "How-To"</h3>
+                        <p class="mt-2 text-gray-300">Demonstro o uso e os benefícios do seu produto de forma clara e didática, educando e engajando os espectadores.</p>
+                    </div>
+                    <div class="bg-[#332216] p-8 rounded-lg shadow-lg transform hover:-translate-y-2 transition-transform duration-300">
+                        <h3 class="font-heading text-xl font-bold text-white">Demonstração de Produtos</h3>
+                        <p class="mt-2 text-gray-300">Mostro seu produto em ação, destacando suas qualidades e funcionalidades em cenários de uso real.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Meu Processo Animado -->
+        <section id="processo" class="py-20 md:py-32 fade-in-section" style="background: #332216;">
+            <div class="container mx-auto max-w-4xl px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold font-heading">Meu Processo de Criação</h2>
+                <p class="text-gray-400 mt-2">Um fluxo de trabalho transparente para garantir os melhores resultados.</p>
+                <div id="process-timeline" class="mt-16 relative">
+                    <div class="absolute left-1/2 top-4 h-full w-0.5 bg-gray-600/30 hidden md:block"></div>
+                    <!-- Step 1 -->
+                    <div class="relative mb-16 flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-10 text-center md:text-right process-step from-left">
+                            <h3 class="font-heading text-2xl text-white">1. Briefing e Alinhamento</h3>
+                            <p class="text-gray-300 mt-2">Entendemos juntos os objetivos da sua marca, o público e a mensagem principal para garantir que o conteúdo seja perfeito.</p>
+                        </div>
+                        <div class="process-dot absolute left-1/2 -translate-x-1/2 w-8 h-8 bg-amber-400 rounded-full border-4 border-[#332216] hidden md:flex items-center justify-center text-black font-bold">1</div>
+                        <div class="md:w-1/2 md:pl-10"></div>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="relative mb-16 flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pl-10 order-1 md:order-2 text-center md:text-left process-step from-right">
+                            <h3 class="font-heading text-2xl text-white">2. Roteiro e Estratégia</h3>
+                            <p class="text-gray-300 mt-2">Desenvolvo um roteiro criativo e uma estratégia de conteúdo. Tudo é enviado para sua aprovação antes da gravação.</p>
+                        </div>
+                        <div class="process-dot absolute left-1/2 -translate-x-1/2 w-8 h-8 bg-amber-400 rounded-full border-4 border-[#332216] hidden md:flex items-center justify-center text-black font-bold">2</div>
+                        <div class="md:w-1/2 md:pr-10 order-2 md:order-1"></div>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="relative mb-16 flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pr-10 text-center md:text-right process-step from-left">
+                            <h3 class="font-heading text-2xl text-white">3. Produção e Gravação</h3>
+                            <p class="text-gray-300 mt-2">Com o roteiro aprovado, dou vida às ideias, gravando com alta qualidade de imagem e áudio para capturar a essência da sua marca.</p>
+                        </div>
+                        <div class="process-dot absolute left-1/2 -translate-x-1/2 w-8 h-8 bg-amber-400 rounded-full border-4 border-[#332216] hidden md:flex items-center justify-center text-black font-bold">3</div>
+                        <div class="md:w-1/2 md:pl-10"></div>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="relative flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/2 md:pl-10 order-1 md:order-2 text-center md:text-left process-step from-right">
+                            <h3 class="font-heading text-2xl text-white">4. Edição e Entrega</h3>
+                            <p class="text-gray-300 mt-2">A mágica final acontece na edição. Entrego o conteúdo finalizado, pronto para ser publicado e encantar seu público.</p>
+                        </div>
+                        <div class="process-dot absolute left-1/2 -translate-x-1/2 w-8 h-8 bg-amber-400 rounded-full border-4 border-[#332216] hidden md:flex items-center justify-center text-black font-bold">4</div>
+                        <div class="md:w-1/2 md:pr-10 order-2 md:order-1"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Métricas com Gráficos (NOVO DESIGN) -->
+        <section id="metricas" class="py-20 md:py-32 fade-in-section">
+            <div class="container mx-auto max-w-7xl px-6 text-center">
+                <h2 class="text-3xl md:text-5xl font-bold font-heading">Métricas de Engajamento</h2>
+                <p class="text-gray-300 mt-4 max-w-2xl mx-auto">Dados que comprovam a força de uma comunidade engajada e o alcance do meu conteúdo.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-16">
+                    <!-- Cards de Números -->
+                    <div class="lg:col-span-1 space-y-8">
+                        <div class="metric-card text-center">
+                            <h3 class="text-xl font-semibold text-white">Alcance</h3>
+                            <p class="metric-value text-5xl font-bold mt-2">3.3k</p>
+                            <p class="metric-label mt-1">Contas alcançadas</p>
+                            <p class="metric-growth text-sm font-semibold mt-1">+341,5%</p>
+                        </div>
+                        <div class="metric-card text-center">
+                             <h3 class="text-xl font-semibold text-white">Visitas ao Perfil</h3>
+                             <p class="metric-value text-5xl font-bold mt-2">821</p>
+                             <p class="metric-label mt-1">Total de visitas</p>
+                             <p class="metric-growth text-sm font-semibold mt-1">+194,3%</p>
+                        </div>
+                    </div>
+                    <!-- Gráficos -->
+                    <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="metric-card md:col-span-2">
+                            <h3 class="text-xl font-semibold text-white mb-4 text-left">Principais Faixas Etárias</h3>
+                            <canvas id="ageChart" height="150"></canvas>
+                        </div>
+                        <div class="metric-card">
+                            <h3 class="text-xl font-semibold text-white mb-4">Gênero</h3>
+                            <canvas id="genderChart" height="200"></canvas>
+                        </div>
+                        <div class="metric-card">
+                            <h3 class="text-xl font-semibold text-white mb-4">Principais Cidades</h3>
+                            <canvas id="cityChart" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Portfólio -->
+        <section id="portfolio" class="py-20 md:py-32 fade-in-section" style="background: #332216;">
             <div class="container mx-auto max-w-7xl px-6">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold" style="color: #fff; letter-spacing: 1px; font-family: 'Playfair Display', serif; font-weight: 700;">Portfólio</h2>
+                    <h2 class="text-3xl md:text-4xl font-bold font-heading">Meu Trabalho</h2>
+                    <p class="text-gray-400 mt-2">Uma amostra dos projetos que criei</p>
                 </div>
-                <nav id="tabs-container" class="flex justify-center gap-10 mb-10" style="font-family: 'Inter', sans-serif;">
+                <nav id="tabs-container" class="flex justify-center flex-wrap gap-x-4 gap-y-2 md:gap-x-8 mb-12">
                     <button data-niche="beleza" class="tab-button active">Beleza</button>
                     <button data-niche="moda" class="tab-button">Moda</button>
                     <button data-niche="lifestyle" class="tab-button">Lifestyle</button>
                     <button data-niche="gastronomia" class="tab-button">Gastronomia</button>
                     <button data-niche="saude" class="tab-button">Saúde</button>
                 </nav>
-                <div id="gallery-wrapper" class="mx-auto" style="max-width: 1100px;">
-                    <div id="gallery-beleza" class="gallery-content"></div>
-                    <div id="gallery-moda" class="gallery-content hidden"></div>
-                    <div id="gallery-lifestyle" class="gallery-content hidden"></div>
-                    <div id="gallery-gastronomia" class="gallery-content hidden"></div>
-                    <div id="gallery-saude" class="gallery-content hidden"></div>
+                <div id="gallery-wrapper" class="mx-auto" style="max-width: 1200px;">
+                    <!-- Galerias serão preenchidas pelo JS -->
                 </div>
             </div>
         </section>
 
         <!-- Seção de Contato -->
-        <section id="contato" class="py-20 md:py-32 fade-in-section" style="background: #332216;">
-            <div class="container mx-auto max-w-4xl px-6 text-center">
-                <h2 class="text-4xl md:text-5xl font-bold text-white">Vamos criar juntos?</h2>
-                <p class="mt-4 text-lg text-gray-300 max-w-2xl mx-auto">Se sua marca valoriza a originalidade e busca uma comunicação humana e impactante, vamos conversar. Estou pronta para criar algo incrível com você.</p>
-                <a href="mailto:Santossulamyta56@gmail.com" class="mt-8 inline-block bg-white text-black text-lg px-10 py-4 rounded-full hover:bg-gray-200 transition-all duration-300 transform hover:scale-105 font-sans">
+        <section id="contato" class="py-20 md:py-32 fade-in-section">
+            <div class="container mx-auto max-w-3xl px-6 text-center">
+                <h2 class="text-4xl md:text-5xl font-bold text-white font-heading">Vamos criar juntos?</h2>
+                <p class="mt-6 text-lg text-gray-300 max-w-2xl mx-auto">Se sua marca valoriza a originalidade e busca uma comunicação humana e impactante, vamos conversar.</p>
+                <a href="mailto:Santossulamyta56@gmail.com" class="mt-10 inline-block btn-primary">
                     Enviar um e-mail
                 </a>
-                <div class="mt-12">
+                <div class="mt-16">
                     <p class="text-gray-400">Ou me encontre nas redes sociais:</p>
-                    <div class="flex justify-center gap-6 mt-4">
-                        <a href="https://www.instagram.com/suhlamita.santos?igsh=MWJ4aXQ5NTljM3dtNg==" target="_blank" rel="noopener" aria-label="Instagram" class="text-gray-400 hover:text-white transition-colors">
+                    <div class="flex justify-center gap-8 mt-6">
+                        <a href="https://www.instagram.com/suhlamita.santos?igsh=MWJ4aXQ5NTljM3dtNg==" target="_blank" rel="noopener" aria-label="Instagram" class="text-gray-400 hover:text-white transition-transform duration-300 hover:scale-110">
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
                         </a>
-                        <a href="https://www.tiktok.com/@suh.santoss3?_t=ZM-8xrSWFQrQV4&_r=1" target="_blank" rel="noopener" aria-label="TikTok" class="text-gray-400 hover:text-white transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 48 48" fill="none"><g><path d="M34.5 6c.2 2.7 1.2 5.2 3 7.1 1.8 1.8 4.3 2.8 7 3v6.1c-2.7-.1-5.3-.7-7.7-1.9v13.7c0 7.2-5.8 13-13 13s-13-5.8-13-13 5.8-13 13-13c.5 0 1 .1 1.5.1v6.2c-.5-.1-1-.1-1.5-.1-3.7 0-6.8 3-6.8 6.8s3 6.8 6.8 6.8 6.8-3 6.8-6.8V6h6.4Z" fill="currentColor"/></g></svg>
+                        <a href="https://www.tiktok.com/@suh.santoss3?_t=ZM-8xrSWFQrQV4&_r=1" target="_blank" rel="noopener" aria-label="TikTok" class="text-gray-400 hover:text-white transition-transform duration-300 hover:scale-110">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97v7.47c0 2.92-2.36 5.28-5.28 5.28-2.91 0-5.27-2.36-5.27-5.28 0-2.91 2.36-5.27 5.27-5.27.17 0 .34.01.5.02v4.03c-.18-.01-.35-.02-.53-.02-1.12 0-2.03.91-2.03 2.03s.91 2.03 2.03 2.03c1.12 0 2.03-.91 2.03-2.03v-9.02c.01-1.31.02-2.62.02-3.93z"/></svg>
                         </a>
                     </div>
                 </div>
@@ -563,198 +589,248 @@
         </section>
     </main>
 
-    <!-- Rodapé -->
-    <footer class="bg-transparent border-t border-gray-800">
+    <footer class="bg-transparent border-t border-white/10">
         <div class="container mx-auto max-w-6xl px-6 py-6 text-center text-gray-500 text-sm">
             <p>&copy; 2024 Suhlamita Santos. Todos os direitos reservados.</p>
         </div>
     </footer>
+    
+    <!-- Lightbox Modal -->
+    <div id="lightbox">
+        <div id="lightbox-content"></div>
+        <button id="lightbox-close">&times;</button>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Lógica da Galeria de Portfólio
-            const portfolioData = {
-                beleza: {
-                    items: [
-                        { type: 'photo', src: 'beleza.jpg', text: 'Beleza 1' },
-                        { type: 'photo', src: 'beleza01.jpg', text: 'Beleza 2' },
-                        { type: 'photo', src: 'beleza02.jpg', text: 'Beleza 3' },
-                        { type: 'photo', src: 'beleza03.jpg', text: 'Beleza 4' },
-                        { type: 'photo', src: 'beleza04.jpg', text: 'Beleza 5' },
-                        { type: 'video', src: 'beleza.mp4', text: 'Vídeo Beleza 1' },
-                        { type: 'video', src: 'beleza1.mp4', text: 'Vídeo Beleza 2' },
-                        { type: 'video', src: 'beleza04.mp4', text: 'Vídeo Beleza 3' }
-                    ]
-                },
-                moda: {
-                    items: [
-                        { type: 'photo', src: 'moda01.jpg', text: 'Moda 1' }
-                    ]
-                },
-                lifestyle: {
-                    items: []
-                },
-                gastronomia: {
-                    items: [
-                        { type: 'photo', src: 'Gastronomia01.jpg', text: 'Gastronomia 1' }
-                    ]
-                },
-                saude: {
-                    items: [
-                        { type: 'photo', src: 'saude.jpg', text: 'Saúde 1' },
-                        { type: 'video', src: 'Saude.mp4', text: 'Vídeo Saúde 1' }
-                    ]
-                }
+            // --- Lógica do Menu Sidebar ---
+            const openBtn = document.getElementById('openSidebar');
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            const navLinks = sidebar.querySelectorAll('nav a');
+
+            const toggleSidebar = () => {
+                sidebar.classList.toggle('open');
+                backdrop.classList.toggle('open');
+                openBtn.classList.toggle('open');
             };
 
+            openBtn.addEventListener('click', toggleSidebar);
+            backdrop.addEventListener('click', toggleSidebar);
+            navLinks.forEach(link => link.addEventListener('click', toggleSidebar));
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                    toggleSidebar();
+                }
+            });
+
+            // --- Lógica da Galeria e Lightbox ---
+            const portfolioData = {
+                beleza: [
+                    { type: 'photo', src: 'beleza.jpg', title: 'Maquiagem Natural' }, 
+                    { type: 'video', src: 'beleza.mp4', title: 'Tutorial Skincare' },
+                    { type: 'photo', src: 'beleza01.jpg', title: 'Look Festa' }, 
+                    { type: 'photo', src: 'beleza02.jpg', title: 'Cuidados com a Pele' }, 
+                    { type: 'video', src: 'beleza1.mp4', title: 'Rotina Matinal' },
+                    { type: 'photo', src: 'beleza03.jpg', title: 'Cabelo e Estilo' }, 
+                    { type: 'photo', src: 'beleza04.jpg', title: 'Unhas Decoradas' },
+                    { type: 'video', src: 'beleza04.mp4', title: 'Review de Produto' }
+                ],
+                moda: [{ type: 'photo', src: 'moda01.jpg', title: 'Look Casual' }],
+                lifestyle: [],
+                gastronomia: [{ type: 'photo', src: 'Gastronomia01.jpg', title: 'Café da Manhã' }],
+                saude: [
+                    { type: 'photo', src: 'saude.jpg', title: 'Yoga e Bem-estar' }, 
+                    { type: 'video', src: 'Saude.mp4', title: 'Treino Funcional' }
+                ]
+            };
+
+            const galleryWrapper = document.getElementById('gallery-wrapper');
+            const tabsContainer = document.getElementById('tabs-container');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxContent = document.getElementById('lightbox-content');
+            const lightboxClose = document.getElementById('lightbox-close');
+
             function createPortfolioCard(item) {
+                const card = document.createElement('div');
+                card.className = 'portfolio-card';
+                card.dataset.type = item.type;
+                card.dataset.src = item.src;
+                
+                let mediaElement, playIcon = '';
                 if (item.type === 'photo') {
-                    return `
-                        <div class="portfolio-card">
-                            <img src="${item.src}" alt="${item.text}">
-                        </div>
-                    `;
+                    mediaElement = `<img src="${item.src}" alt="${item.title}" loading="lazy" class="pointer-events-none" onerror="this.closest('.portfolio-card').style.display='none'">`;
+                } else {
+                    mediaElement = `<video src="${item.src}" playsinline loop muted preload="metadata" class="pointer-events-none" onerror="this.closest('.portfolio-card').style.display='none'"></video>`;
+                    playIcon = `<svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>`;
                 }
-                if (item.type === 'video') {
-                    return `
-                        <div class="portfolio-card">
-                            <video src="${item.src}" controls playsinline preload="metadata" style="width:100%; aspect-ratio: 9/16; border-radius: 0.4rem; background: #222;"></video>
-                        </div>
-                    `;
+
+                card.innerHTML = `${mediaElement}<div class="card-overlay pointer-events-none"><h3 class="card-title">${item.title}</h3>${playIcon}</div>`;
+                
+                const video = card.querySelector('video');
+                if(video) {
+                    card.addEventListener('mouseenter', () => video.play().catch(e => {}));
+                    card.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
                 }
-                return '';
+                card.addEventListener('click', () => openLightbox(item));
+                return card;
             }
 
             function renderGallery(niche) {
-                const galleryContainer = document.getElementById(`gallery-${niche}`);
-                const data = portfolioData[niche];
-                if (!galleryContainer || !data) return;
-
-                let content = `
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-                        ${data.items.map(item => createPortfolioCard(item)).join('')}
-                    </div>
-                `;
-                galleryContainer.innerHTML = content;
+                galleryWrapper.innerHTML = '';
+                const items = portfolioData[niche];
+                if (!items || items.length === 0) {
+                    galleryWrapper.innerHTML = `<p class="text-center text-gray-400 col-span-full">Nenhum projeto aqui por enquanto!</p>`;
+                    return;
+                }
+                const galleryGrid = document.createElement('div');
+                galleryGrid.className = 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6';
+                items.forEach(item => galleryGrid.appendChild(createPortfolioCard(item)));
+                galleryWrapper.appendChild(galleryGrid);
+            }
+            
+            function openLightbox(item) {
+                lightboxContent.innerHTML = (item.type === 'photo') ? `<img src="${item.src}" alt="${item.title}">` : `<video src="${item.src}" controls autoplay></video>`;
+                lightbox.classList.add('active');
+            }
+            
+            function closeLightbox() {
+                lightboxContent.innerHTML = '';
+                lightbox.classList.remove('active');
             }
 
-            const tabsContainer = document.getElementById('tabs-container');
-            const tabs = tabsContainer.querySelectorAll('.tab-button');
-            const galleries = document.querySelectorAll('.gallery-content');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const currentActiveTab = document.querySelector('.tab-button.active');
-                    if (currentActiveTab) {
-                        currentActiveTab.classList.remove('active');
-                    }
-                    tab.classList.add('active');
-
-                    const niche = tab.dataset.niche;
-                    galleries.forEach(g => {
-                        g.classList.add('hidden');
-                        g.classList.remove('sliding-in');
-                    });
-
-                    const targetGallery = document.getElementById(`gallery-${niche}`);
-                    if (targetGallery) {
-                        targetGallery.classList.remove('hidden');
-                        void targetGallery.offsetWidth;
-                        targetGallery.classList.add('sliding-in');
-                    }
-                });
+            tabsContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('tab-button')) {
+                    tabsContainer.querySelector('.active').classList.remove('active');
+                    e.target.classList.add('active');
+                    renderGallery(e.target.dataset.niche);
+                }
             });
-
-            // Renderizar todas as galerias inicialmente
-            Object.keys(portfolioData).forEach(niche => renderGallery(niche));
             
-            // Ativar a primeira aba
-            document.querySelector('.tab-button[data-niche="beleza"]').click();
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
+            window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lightbox.classList.contains('active')) closeLightbox(); });
 
+            renderGallery('beleza');
 
-            // Animação de Scroll para seções
-            const sections = document.querySelectorAll('.fade-in-section');
-            const sectionObserver = new IntersectionObserver((entries) => {
+            // --- Animações de Scroll ---
+            const scrollElements = document.querySelectorAll('.fade-in-section, .process-step, .process-dot');
+            const elementObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('is-visible');
+                        entry.target.classList.add('is-visible', 'visible');
+                        observer.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.1 });
-            sections.forEach(section => sectionObserver.observe(section));
+            }, { threshold: 0.15 });
+            scrollElements.forEach(el => elementObserver.observe(el));
 
-            // Lógica para destacar navegação com scroll
-            const navLinks = document.querySelectorAll('.nav-link');
-            const scrollSections = document.querySelectorAll('main section');
-            const navObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        navLinks.forEach(link => {
-                            link.classList.remove('active');
-                            if (link.getAttribute('href').substring(1) === entry.target.id) {
-                                link.classList.add('active');
-                            }
-                        });
-                    }
-                });
-            }, { rootMargin: "-50% 0px -50% 0px" });
-            scrollSections.forEach(section => navObserver.observe(section));
-
-            // Fade-in do arco UGC PORTFOLIO
+            // --- Animação do Hero ---
             const arc = document.querySelector('.fade-in-arc');
-            setTimeout(() => {
-              arc.classList.add('visible');
-            }, 300);
+            setTimeout(() => arc.classList.add('visible'), 300);
 
-            // Animação letra por letra do arco
             const arcText = "UGC CREATOR";
             const arcTextPath = document.getElementById('arc-text');
             let arcIndex = 0;
             function typeArcLetter() {
                 if (arcIndex <= arcText.length) {
-                    arcTextPath.textContent = arcText.slice(0, arcIndex);
-                    arcIndex++;
-                    setTimeout(typeArcLetter, 120); // ajuste a velocidade aqui (ms)
+                    arcTextPath.textContent = arcText.slice(0, arcIndex++);
+                    setTimeout(typeArcLetter, 120);
                 }
             }
-            typeArcLetter();
+            setTimeout(typeArcLetter, 800);
 
+            // --- Configuração dos Gráficos (Chart.js) ---
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.color = '#D1C5B4';
+
+            const ctxGender = document.getElementById('genderChart');
+            if (ctxGender) {
+                new Chart(ctxGender, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Mulheres', 'Homens'],
+                        datasets: [{
+                            data: [74.7, 25.3],
+                            backgroundColor: ['#D946EF', '#A47149'],
+                            borderColor: '#332216',
+                            borderWidth: 4,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        cutout: '60%',
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { font: { size: 14 } }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const ctxAge = document.getElementById('ageChart');
+            if (ctxAge) {
+                new Chart(ctxAge, {
+                    type: 'bar',
+                    data: {
+                        labels: ['25-34', '18-24', '35-44', '13-17'],
+                        datasets: [{
+                            label: '% por Faixa Etária',
+                            data: [50, 26.2, 15.6, 3.4],
+                            backgroundColor: 'rgba(233, 179, 132, 0.8)',
+                            borderColor: '#E9B384',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            x: {
+                                ticks: { color: '#D1C5B4', font: { weight: '600' } },
+                                grid: { color: 'rgba(245, 233, 218, 0.1)',
+                                borderWidth: 2, }
+                            },
+                            y: {
+                                ticks: { color: '#F5E9DA', font: { size: 14, weight: '600' } },
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                });
+            }
+
+            const ctxCity = document.getElementById('cityChart');
+            if (ctxCity) {
+                new Chart(ctxCity, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Recife', 'Olinda', 'Paulista', 'Jaboatão'],
+                        datasets: [{
+                            data: [28.2, 25.5, 6.9, 5.5],
+                            backgroundColor: ['#D946EF', '#A47149', '#A21CAF', '#7C5E48'],
+                            borderColor: '#332216',
+                            borderWidth: 4,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { font: { size: 14 } }
+                            }
+                        }
+                    }
+                });
+            }
         });
     </script>
-
-<script>
-    const openBtn = document.getElementById('openSidebar');
-    const closeBtn = document.getElementById('closeSidebar');
-    const sidebar = document.getElementById('sidebar');
-    const backdrop = document.getElementById('sidebarBackdrop');
-    const links = sidebar.querySelectorAll('nav a');
-
-    function openSidebar() {
-      sidebar.classList.add('open');
-      backdrop.classList.add('open');
-      openBtn.classList.add('open');
-    }
-    function closeSidebar() {
-      sidebar.classList.remove('open');
-      backdrop.classList.remove('open');
-      openBtn.classList.remove('open');
-    }
-    openBtn.addEventListener('click', openSidebar);
-    closeBtn.addEventListener('click', closeSidebar);
-    backdrop.addEventListener('click', closeSidebar);
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeSidebar();
-    });
-
-    // Destacar link ativo ao clicar
-    links.forEach(link => {
-      link.addEventListener('click', () => {
-        links.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-        closeSidebar();
-      });
-    });
-  </script>
-
 </body>
 </html>
